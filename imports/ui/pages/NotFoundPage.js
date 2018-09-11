@@ -5,11 +5,9 @@ import classnames from 'classnames';
 
 // Task component - represents a single todo item
 export default class Test extends Component {
-
-
     render() {
         return (
-            <span>Page not found</span>
+            <h1>Page not found</h1>
         );
     }
 }

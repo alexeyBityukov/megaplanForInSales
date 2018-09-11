@@ -19,23 +19,28 @@ const md5 = require('md5');
 }*/
 
 Meteor.methods({
-  'install': function(shopURL, token, inSalesId) {
-      if(shopURL && token && inSalesId)
+  install(shopURL, token, inSalesId) {
+      if(!(shopURL && token && inSalesId))
           throw new Meteor.Error('empty-query', 'Empty query');
 
-      //let appSecretKey = '';
+      if(!config.appSecretKey)
+          throw new Meteor.Error('empty-appSecretKey', 'Empty field appSecretKey in config file');
 
-      //let pass = md5(token + appSecretKey);
-      console.log(config);
-      let pass = config.test;
-      Shops.insert({
-          pass,
-          inSalesId,
-          shopURL,
-          createdAt: new Date(),
-      });
+      let appSecretKey = config.appSecretKey;
+      let passwordForApi = md5(token + appSecretKey);
 
-    //throw new Meteor.Error(500, 'Internal server error');
-    return true;
+      Shops.upsert(
+          {
+              inSalesId: inSalesId
+          },
+          {
+              passwordForApi,
+              inSalesId,
+              shopURL,
+              createdAt: new Date(),
+          }
+      );
+
+      return true;
   }
 });

@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import { Tasks } from '../api/tasks.js';
+//import { Remove_tasks } from '../api/tasks.js';
 
-import Task from './Task.js';
+//import Remove_Task from './Task.js';
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 
 // App component - represents the whole app
@@ -45,13 +45,7 @@ class App extends Component {
       const currentUserId = this.props.currentUser && this.props.currentUser._id;
       const showPrivateButton = task.owner === currentUserId;
 
-      return (
-        <Task
-          key={task._id}
-          task={task}
-          showPrivateButton={showPrivateButton}
-        />
-      );
+      return ;
     });
   }
 
@@ -96,8 +90,8 @@ export default withTracker(() => {
   Meteor.subscribe('tasks');
 
   return {
-    tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
-    incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
+    //tasks: Remove_tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
+    //incompleteCount: Remove_tasks.find({ checked: { $ne: true } }).count(),
     currentUser: Meteor.user(),
   };
 })(App);

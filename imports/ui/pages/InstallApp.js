@@ -12,12 +12,11 @@ export default class InstallApp extends Component {
 
     componentDidMount() {
         let queryParam = queryString.parse(location.search);
-        Meteor.call('install', queryParam.shop, queryParam.token, queryParam.insales_id);//, (error, result) => {
+        Meteor.call('install', queryParam.shop, queryParam.token, queryParam.insales_id, (error, result) => {
            // if(error && error.error === 500)
            //     this.setState({installStatus: false})
-           //else
-           //     this.setState({installStatus: result})
-        //});
+            this.setState({installStatus: result});
+        });
     }
 
     render() {
