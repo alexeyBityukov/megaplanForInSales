@@ -9,7 +9,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 
 // App component - represents the whole app
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
 
@@ -85,13 +85,3 @@ class App extends Component {
     );
   }
 }
-
-export default withTracker(() => {
-  Meteor.subscribe('tasks');
-
-  return {
-    //tasks: Remove_tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
-    //incompleteCount: Remove_tasks.find({ checked: { $ne: true } }).count(),
-    currentUser: Meteor.user(),
-  };
-})(App);

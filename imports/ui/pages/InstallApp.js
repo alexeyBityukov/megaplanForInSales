@@ -1,31 +1,37 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
+import {withTracker} from "meteor/react-meteor-data";
 import queryString from 'query-string';
+import { Shops } from '../../api/installApp.js';
 
-export default class InstallApp extends Component {
+const queryParam = queryString.parse(location.search);
+
+class InstallApp extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            installStatus: null
-        };
     }
 
     componentDidMount() {
-        let queryParam = queryString.parse(location.search);
         Meteor.call('install', queryParam.shop, queryParam.token, queryParam.insales_id, (error, result) => {
            // if(error && error.error === 500)
            //     this.setState({installStatus: false})
-            this.setState({installStatus: result});
         });
     }
 
     render() {
         return (
             <div>
-                {this.state.installStatus === null && <span>installing</span>}
-                {this.state.installStatus === true && <span>installed</span>}
-                {this.state.installStatus === false && <span>install err</span>}
+                {this.props.shops.length === 0 && <span>empty</span>}
+                {this.props.shops.length !== 0 && <span>not empty</span>}
             </div>
         )
     }
 }
+
+export default withTracker(() => {
+    Meteor.subscribe('shops', queryParam.insales_id);
+
+    return {
+        shops: Shops.find().fetch()
+    };
+})(InstallApp);
