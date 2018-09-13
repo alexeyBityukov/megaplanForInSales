@@ -9,7 +9,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import AccountsUIWrapper from './AccountsUIWrapper.js';
 
 // App component - represents the whole app
-export default class App extends Component {
+export default class Remove_App extends Component {
   constructor(props) {
     super(props);
 
