@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import {withTracker} from "meteor/react-meteor-data";
 import queryString from 'query-string';
-import { Shops, errorCodeEmptyQuery, errorCodeEmptyAppSecretKey } from '../../api/installApp.js';
+import { errorCodeEmptyQuery, errorCodeEmptyAppSecretKey } from '../../api/installApp.js';
+import { Shops } from '../../api/publications.js';
 
 const queryParam = queryString.parse(location.search);
 
@@ -14,7 +15,7 @@ class InstallApp extends Component {
 
     upsertShop = () => {
         if(!this.isInstalled())
-            Meteor.call('install', queryParam.shop, queryParam.token, queryParam.insales_id, (error, result) => {
+            Meteor.call('install', queryParam.shop, queryParam.token, queryParam.insales_id, (error) => {
                 if(error && error.error === errorCodeEmptyQuery)
                     this.setState({error: errorCodeEmptyQuery});
                 else if (error && error.error === errorCodeEmptyAppSecretKey)
@@ -23,7 +24,7 @@ class InstallApp extends Component {
     };
 
     isInstalled() {
-        return !(this.props.shops.length === 0);
+        return !(this.props.shop === undefined);
     }
 
     componentWillMount() {
@@ -56,6 +57,6 @@ export default withTracker(() => {
     Meteor.subscribe('shops', queryParam.insales_id);
 
     return {
-        shops: Shops.find().fetch()
+        shop: Shops.findOne()
     };
 })(InstallApp);

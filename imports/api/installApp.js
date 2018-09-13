@@ -1,18 +1,13 @@
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
-import { config } from '../config.js'
+import { config } from '../config.js';
+import { Shops, publishShops } from './publications.js';
 
-export const Shops = new Mongo.Collection('shops');
 export const errorCodeEmptyQuery = 'empty-query';
 export const errorCodeEmptyAppSecretKey = 'empty-appSecretKey';
 
 const md5 = require('md5');
 
-if (Meteor.isServer) {
-  Meteor.publish('shops', function(inSalesId) {
-      return Shops.find({inSalesId: inSalesId});
-  });
-}
+publishShops();
 
 Meteor.methods({
   install(shopURL, token, inSalesId) {
