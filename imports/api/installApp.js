@@ -11,7 +11,7 @@ publishShops();
 
 Meteor.methods({
   install(shopURL, token, inSalesId) {
-      if(!(shopURL && token && inSalesId))
+       if(!(shopURL && token && inSalesId))
           throw new Meteor.Error(errorCodeEmptyQuery, 'Empty query');
 
       if(!config.appSecretKey)

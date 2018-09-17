@@ -1,1 +1,1 @@
-import '../imports/api/installApp.js';
+import '../imports/startup/apiRoures.js'
