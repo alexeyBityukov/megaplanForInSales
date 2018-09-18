@@ -11,7 +11,7 @@ WebApp.connectHandlers.use('/install', (req, res, next) => {
             res.writeHead(500);
         else
             res.writeHead(200);
-        res.end(renderToString(<InstallApp inSalesId={req.query.insales_id} shop={req.query.shop} token={req.query.token} errorCode={error && error.error && error.error} />));
+        res.end(renderToString(<InstallApp inSalesId={req.query.insales_id} shop={req.query.shop} token={req.query.token} errorCode={error && error.error} errorMessage={error && error.error && error.reason}/>));
     });
 });
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {withTracker} from "meteor/react-meteor-data";
-import { errorCodeEmptyQuery, errorCodeEmptyAppSecretKey } from '../../api/installApp.js';
 import { Shops } from '../../api/publications.js';
+import InstallError from '../components/installError';
 
 
 class InstallApp extends Component {
@@ -17,17 +17,17 @@ class InstallApp extends Component {
         let message = '';
 
         if(this.props.errorCode !== undefined)
-            message = <span>error</span>;//использовать компонент ошибка
-        else if(!this.isInstalled())
-            message = <span>Application not installed</span>;
-        else if(this.isInstalled())
-            message = <span>Application successfully installed</span>;
+            message = <InstallError errorCode={this.props.errorCode} errorMessage={this.props.errorMessage}/>;
+        else if (!this.isInstalled())
+            message = <span className="install-status">Application not installed</span>;
+        else if (this.isInstalled())
+            message = <span className="install-status">Application successfully installed</span>;
 
         return (
-            <div>
+            <div className="installInfo">
                 {message}
             </div>
-        )
+        );
     }
 }
 
