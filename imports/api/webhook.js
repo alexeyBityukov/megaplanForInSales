@@ -1,29 +1,41 @@
 import { Meteor } from 'meteor/meteor';
-import { Shops, publishShops } from './publications.js';
+import { config } from '../config.js';
+import { Shops } from './publications.js';
+import { publishShops } from '../api/publications.js';
 
 publishShops();
 
+export const webhookNotFoundErrorCode = 'webhook-not-found';
+
 Meteor.methods({
-    /*install(shopURL, token, inSalesId) {
-        if(!(shopURL && token && inSalesId))
-            throw new Meteor.Error(errorCodeEmptyQuery, 'Empty query');
-
-        if(!config.appSecretKey)
-            throw new Meteor.Error(errorCodeEmptyAppSecretKey, 'Empty field appSecretKey in config file');
-
-        let appSecretKey = config.appSecretKey;
-        let passwordForApi = md5(token + appSecretKey);
-
-        Shops.upsert(
-            {
+    webhookIdIsValid(inSalesId, webhookId, passwordForApi, shopURL) {
+        let setWebhookIdLastUpdate = () => {
+            Shops.update({
                 inSalesId: inSalesId
             },
             {
-                passwordForApi,
-                inSalesId,
-                shopURL,
-                createdAt: new Date(),
-            }
-        );
-    }*/
+                $set: {webhookIdLastUpdate: new Date()}
+            });
+        };
+
+        try {
+            const url = `${config.requestProtocol}://${config.applicationId}:${passwordForApi}@${shopURL}/admin/webhooks/${webhookId}.json`;
+            const result = HTTP.call('GET', url, {
+                auth: config.applicationId + ':' + passwordForApi,
+                headers: {'Content-Type': 'application/json'}
+            });
+            setWebhookIdLastUpdate();
+            if(response.statusCode === 200)
+                return true;
+            else if(response.statusCode === 404)
+                return webhookNotFound;
+            else
+                return response.message;
+        } catch (e) {
+            return e.message;
+        }
+        finally {
+            setWebhookIdLastUpdate();
+        }
+    }
 });

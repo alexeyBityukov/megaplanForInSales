@@ -20,3 +20,4 @@ react-meteor-data
 meteortesting:mocha
 underscore
 templating
+http

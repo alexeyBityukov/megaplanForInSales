@@ -3,14 +3,18 @@ import { Meteor } from 'meteor/meteor';
 import {withTracker} from "meteor/react-meteor-data";
 import queryString from 'query-string';
 import { Shops } from '../../api/publications.js';
+import { webhookNotFoundErrorCode } from "../../api/webhook.js";
 
 const queryParam = queryString.parse(location.search);
 export const webhookInstallStatuses = {
-    findingWebhookId: 'Поиск webhookID',
-    findWebhookId: 'webhookID найден',
-    notFindWebhookId: 'webhookID НЕ найден',
-    ok: 'webhookID найден, нужно проверить его доступность',
+    findingWebhookId: 'Поиск идентификатора',
+    notFindWebhookId: 'Идентификатор отсутствует',
+    checkingWebhookId: 'Проверка идентификатора',
+    installingWebhook: 'Установка',
+    webhookIdInvalid: 'Недоступен',
+    webhookIdValid: 'Установлен',
 };
+const wedhookStatusUpadteInterval = 10000;
 
 class ShopAccount extends Component {
     constructor(props) {
@@ -19,22 +23,36 @@ class ShopAccount extends Component {
     }
 
     webhookIsInstalled() {
-        if(this.props.shop !== undefined && 'webhookId' in this.props.shop)
-            this.webhookStatusInstallUpadte(webhookInstallStatuses.ok); //check avalable webhook
+        if(this.props.shop !== undefined && 'webhookId' in this.props.shop ){
+            this.webhookIdIsValid();
+        }
         else
-            this.webhookStatusInstallUpadte(webhookInstallStatuses.notFindWebhookId);
+            this.webhookStatusInstallUpdate(webhookInstallStatuses.notFindWebhookId);
     }
 
-    webhookStatusInstallUpadte(newStatus) {
+    webhookIdIsValid() {
+        if (!('webhookIdLastUpdate' in this.props.shop) || new Date() - new Date(this.props.shop.webhookIdLastUpdate) > wedhookStatusUpadteInterval)
+            Meteor.call('webhookIdIsValid', queryParam.insales_id, this.props.shop.webhookId, this.props.shop.passwordForApi, this.props.shop.shopURL, (error, result) => {
+                if(result === webhookNotFoundErrorCode) {
+                    this.webhookStatusInstallUpdate(webhookInstallStatuses.installingWebhook);
+                    //инициализировать установку
+                }
+                else if(result === true)
+                    this.webhookStatusInstallUpdate(webhookInstallStatuses.webhookIdValid);
+                else
+                    this.webhookStatusInstallUpdate(webhookInstallStatuses.webhookIdInvalid);
+            });
+    }
+
+    webhookStatusInstallUpdate(newStatus) {
         if(this.props.shop !== undefined && this.state.webhookInstallStatus !== newStatus)
-            this.setState({webhookInstallStatus: newStatus});
+            if(!((this.state.webhookInstallStatus === webhookInstallStatuses.webhookIdInvalid || this.state.webhookInstallStatus === webhookInstallStatuses.webhookIdValid) &&
+                (newStatus === webhookInstallStatuses.checkingWebhookId || newStatus === webhookInstallStatuses.installingWebhook)))
+                this.setState({webhookInstallStatus: newStatus});
     }
 
     componentDidMount() {
         this.webhookIsInstalled();
-        /*Meteor.call('webhookIsInstalled', queryParam.insales_id, (error, result) => {
-            this.setState({webhookInstallStatus: result});
-        });*/
     }
 
     componentDidUpdate() {
@@ -42,9 +60,10 @@ class ShopAccount extends Component {
     }
 
     render() {
+        //провека insales id на существование
         return (
             <div>
-                <p className="webhookInstallStatus">{this.state.webhookInstallStatus}</p>
+                <p className="webhookInstallStatus">Статус вебхука: {this.state.webhookInstallStatus}</p>
                 <p>account</p>
             </div>
         )
