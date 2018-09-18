@@ -1,13 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { config } from '../config.js';
-import { Shops, publishShops } from './publications.js';
+import { Shops } from './publications.js';
 
 export const errorCodeEmptyQuery = 'empty-query';
 export const errorCodeEmptyAppSecretKey = 'empty-appSecretKey';
 
 const md5 = require('md5');
-
-publishShops();
 
 Meteor.methods({
   install(shopURL, token, inSalesId) {
