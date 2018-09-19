@@ -3,52 +3,36 @@ import { Meteor } from 'meteor/meteor';
 import {withTracker} from "meteor/react-meteor-data";
 import queryString from 'query-string';
 import { Shops } from '../../api/publications.js';
-import { webhookNotFoundErrorCode } from "../../api/webhook.js";
+import { webhookInstallStatuses } from "../../api/webhook.js";
 
 const queryParam = queryString.parse(location.search);
-export const webhookInstallStatuses = {
-    findingWebhookId: 'Поиск идентификатора',
-    notFindWebhookId: 'Идентификатор отсутствует',
-    checkingWebhookId: 'Проверка идентификатора',
-    installingWebhook: 'Установка',
-    webhookIdInvalid: 'Недоступен',
-    webhookIdValid: 'Установлен',
-};
-const wedhookStatusUpadteInterval = 10000;
 
 class ShopAccount extends Component {
     constructor(props) {
         super(props);
-        this.state = {webhookInstallStatus: webhookInstallStatuses.findingWebhookId};
     }
 
     webhookIsInstalled() {
-        if(this.props.shop !== undefined && 'webhookId' in this.props.shop ){
-            this.webhookIdIsValid();
-        }
-        else
-            this.webhookStatusInstallUpdate(webhookInstallStatuses.notFindWebhookId);
+        if(this.props.shop !== undefined)
+            if('webhookId' in this.props.shop){
+                if('webhookInstallStatus' in this.props.shop && this.props.shop.webhookInstallStatus !== webhookInstallStatuses.webhookIdInvalid && this.props.shop.webhookInstallStatus !== webhookInstallStatuses.webhookInstallingError)
+                    this.webhookIdIsValid();
+                else
+                    if('webhookInstallStatus' in this.props.shop && this.props.shop.webhookInstallStatus !== webhookInstallStatuses.webhookInstallingError)
+                        Meteor.call('installWebhook', queryParam.insales_id, this.props.shop.passwordForApi, this.props.shop.shopURL);
+            }
+            else
+                Meteor.call('installWebhook', queryParam.insales_id, this.props.shop.passwordForApi, this.props.shop.shopURL);
     }
 
     webhookIdIsValid() {
-        if (!('webhookIdLastUpdate' in this.props.shop) || new Date() - new Date(this.props.shop.webhookIdLastUpdate) > wedhookStatusUpadteInterval)
-            Meteor.call('webhookIdIsValid', queryParam.insales_id, this.props.shop.webhookId, this.props.shop.passwordForApi, this.props.shop.shopURL, (error, result) => {
-                if(result === webhookNotFoundErrorCode) {
-                    this.webhookStatusInstallUpdate(webhookInstallStatuses.installingWebhook);
-                    //инициализировать установку
-                }
-                else if(result === true)
-                    this.webhookStatusInstallUpdate(webhookInstallStatuses.webhookIdValid);
-                else
-                    this.webhookStatusInstallUpdate(webhookInstallStatuses.webhookIdInvalid);
-            });
+        Meteor.call('webhookIdIsValid', queryParam.insales_id, this.props.shop.webhookId, this.props.shop.passwordForApi, this.props.shop.shopURL);
+
     }
 
-    webhookStatusInstallUpdate(newStatus) {
-        if(this.props.shop !== undefined && this.state.webhookInstallStatus !== newStatus)
-            if(!((this.state.webhookInstallStatus === webhookInstallStatuses.webhookIdInvalid || this.state.webhookInstallStatus === webhookInstallStatuses.webhookIdValid) &&
-                (newStatus === webhookInstallStatuses.checkingWebhookId || newStatus === webhookInstallStatuses.installingWebhook)))
-                this.setState({webhookInstallStatus: newStatus});
+    getWebhookInstallStatus() {
+        if(this.props.shop !== undefined && 'webhookInstallStatus' in this.props.shop)
+            return this.props.shop.webhookInstallStatus;
     }
 
     componentDidMount() {
@@ -63,7 +47,7 @@ class ShopAccount extends Component {
         //провека insales id на существование
         return (
             <div>
-                <p className="webhookInstallStatus">Статус вебхука: {this.state.webhookInstallStatus}</p>
+                <p className="webhookInstallStatus">Статус вебхука: {this.getWebhookInstallStatus()} <button>Ручное обновление</button></p>
                 <p>account</p>
             </div>
         )
