@@ -5,8 +5,7 @@ import { Shops } from './publications.js';
 export const unknownErrorOnApiInSalesRequest = 'unknown-error-on-api-insales-request';
 
 export const inSalesApiGet = (inSalesId, url) => {
-    inSalesApiRequest('GET', inSalesId, url);
-    return true;
+    return inSalesApiRequest('GET', inSalesId, url);
 };
 
 export const inSalesApiPost = (inSalesId, url, data) => {
