@@ -9,18 +9,23 @@ export const inSalesApiGet = (inSalesId, url) => {
     return true;
 };
 
-const inSalesApiRequest = (type, inSalesId, url) => {
+export const inSalesApiPost = (inSalesId, url, data) => {
+    return inSalesApiRequest('POST', inSalesId, url, data);
+};
+
+const inSalesApiRequest = (type, inSalesId, url, data) => {
     const shop = Shops.findOne({inSalesId : inSalesId});
     const fullUrl = `${config.requestProtocol}://${shop.shopURL}/admin/${url}`;
     if(Meteor.isServer) {
         try {
             const response = HTTP.call(type, fullUrl, {
                 auth: config.applicationId + ':' + shop.passwordForApi,
-                headers: {'Content-Type': 'application/json'}
+                headers: {'Content-Type': 'application/json'},
+                data: data
             });
 
             if(response && response.statusCode) {
-                if(response.statusCode === 200)
+                if(response.statusCode === 200 || response.statusCode === 201)
                     return response;
                 else {
                     let error = new Error(response.message);
