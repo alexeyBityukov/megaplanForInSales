@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
-import { config } from '../config.js';
 import { Shops } from './publications.js';
 import { publishShops } from '../api/publications.js';
+import { inSalesApiGet } from '../api/httpRequests.js';
+import { config } from '../config.js';
 
 export const webhookInstallStatuses = {
     notFindWebhookId: 'Идентификатор отсутствует',
@@ -10,38 +11,15 @@ export const webhookInstallStatuses = {
     unknownError: 'Неизвесная ошибка',
     webhookInstallingError: 'Ошибка при установке'
 };
+export const unknownErrorOnCheckingWebhookId = 'unknown-error-on-checking-webhook-id';
 
 publishShops();
 
 Meteor.methods({
-    webhookIdIsValid(inSalesId, webhookId, passwordForApi, shopURL) {
-        let setWebhookInsatallStatus = (newStatus) => {
-            Shops.update({
-                    inSalesId: inSalesId
-                },
-                {
-                    $set: {webhookInstallStatus: newStatus}
-                });
-         };
-        if(Meteor.isServer) {
-            try {
-                const url = `${config.requestProtocol}://${shopURL}/admin/webhooks/${webhookId}.json`;
-                HTTP.call('GET', url, {
-                    auth: config.applicationId + ':' + passwordForApi,
-                    headers: {'Content-Type': 'application/json'}
-                }, (error, result) => {
-                    if(result.statusCode === 200)
-                        setWebhookInsatallStatus(webhookInstallStatuses.webhookIdValid);
-                    else if(result && result.statusCode && result.statusCode === 404)
-                        setWebhookInsatallStatus(webhookInstallStatuses.webhookIdInvalid);
-                    else
-                        setWebhookInsatallStatus(webhookInstallStatuses.unknownError);
-                });
-            } catch (e) {
-                setWebhookInsatallStatus(webhookInstallStatuses.unknownError);
-            }
-        }
+    webhookIdIsValid(inSalesId, webhookId) {
+        return inSalesApiGet(inSalesId, `webhooks/${webhookId}.json`);
     },
+
     installWebhook(inSalesId, passwordForApi, shopURL) {
         let updateWebhook = (webhookId, webhookInstallStatus) => {
             Shops.update({
