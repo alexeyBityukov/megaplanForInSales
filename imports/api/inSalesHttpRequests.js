@@ -18,7 +18,7 @@ const inSalesApiRequest = (type, inSalesId, url, data) => {
     if(Meteor.isServer) {
         try {
             const response = HTTP.call(type, fullUrl, {
-                auth: config.applicationId + ':' + shop.passwordForApi,
+                auth: config.applicationId + ':' + shop.inSalesApiPassword,
                 headers: {'Content-Type': 'application/json'},
                 data: data
             });

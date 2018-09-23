@@ -16,14 +16,14 @@ Meteor.methods({
           throw new Meteor.Error(errorCodeEmptyAppSecretKey, 'Empty field appSecretKey in config file');
 
       let appSecretKey = config.appSecretKey;
-      let passwordForApi = md5(token + appSecretKey);
+      let inSalesApiPassword = md5(token + appSecretKey);
 
       Shops.upsert(
           {
               inSalesId: inSalesId
           },
           {
-              passwordForApi,
+              inSalesApiPassword: inSalesApiPassword,
               inSalesId,
               shopURL,
               createdAt: new Date(),

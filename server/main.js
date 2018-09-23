@@ -1,3 +1,4 @@
-import '../imports/startup/apiRoures.js';
-import '../imports/api/webhook.js';
-import '../imports/api/applicationCharge.js';
+import '../imports/startup/apiRoures';
+import '../imports/api/webhook';
+import '../imports/api/applicationCharge';
+import '../imports/api/megaplanApi';

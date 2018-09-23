@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Shops } from './publications.js';
-import { inSalesApiGet, inSalesApiPost } from '../api/httpRequests.js';
+import { inSalesApiGet, inSalesApiPost } from './inSalesHttpRequests.js';
 import { config } from '../config.js';
 
 Meteor.methods({
@@ -23,8 +23,12 @@ Meteor.methods({
                 trial_expired_at: now.toISOString().substr(0, 10),
             }
         };
-
-        const response = inSalesApiPost(inSalesId, 'recurring_application_charge.json', data);
+        try {
+            const response = inSalesApiPost(inSalesId, 'recurring_application_charge.json', data);
+        }
+        catch (e) {
+            return false;
+        }
         if(response && response.statusCode === 201) {
             Shops.upsert(
                 {inSalesId: inSalesId},

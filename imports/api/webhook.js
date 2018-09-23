@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Shops } from './publications.js';
 import { publishShops } from '../api/publications.js';
-import { inSalesApiGet, inSalesApiPost } from '../api/httpRequests.js';
+import { inSalesApiGet, inSalesApiPost } from './inSalesHttpRequests.js';
 import { config } from '../config.js';
 
 publishShops();
