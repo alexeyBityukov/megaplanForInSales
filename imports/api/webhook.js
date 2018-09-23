@@ -7,8 +7,9 @@ import { config } from '../config.js';
 publishShops();
 
 Meteor.methods({
-    webhookIdIsValid(inSalesId, webhookId) {
-        return inSalesApiGet(inSalesId, `webhooks/${webhookId}.json`);
+    webhookIdIsValid(inSalesId) {
+        const shop = Shops.findOne({inSalesId : inSalesId});
+        return inSalesApiGet(inSalesId, `webhooks/${shop.webhookId}.json`);
     },
 
     installWebhook(inSalesId) {

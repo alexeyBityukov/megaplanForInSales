@@ -4,4 +4,5 @@ export const  config = {
     requestProtocol: 'https',
     webhookURL: 'terst.ru',
     monthlyCost: '1000',
+    megaplanApiAuthorizationUrl: '/BumsCommonApiV01/User/authorize.api',
 };

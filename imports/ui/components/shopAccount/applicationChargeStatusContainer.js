@@ -10,6 +10,9 @@ const ShopInSalesId = queryString.parse(location.search).insales_id;
 class ApplicationChargeStatusContainer extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            error: undefined
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -20,12 +23,15 @@ class ApplicationChargeStatusContainer extends Component {
     getApplicationChargeStatus() {
         Meteor.call('getApplicationChargeStatus', ShopInSalesId, (error) => {
             if(error)
-                Meteor.call('upsertApplicationChargeStatus', ShopInSalesId);
+                Meteor.call('upsertApplicationChargeStatus', ShopInSalesId, (error) => {
+                    if(error)
+                        this.setState({error: error.message})
+                });
         });
     }
 
     render() {
-        return <ApplicationChargeStatus status={this.props.shop && this.props.shop.lockDate} />;
+        return <ApplicationChargeStatus status={this.props.shop && this.props.shop.lockDate} error={this.state.error}/>;
     }
 }
 

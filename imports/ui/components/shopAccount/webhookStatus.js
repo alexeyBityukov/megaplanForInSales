@@ -1,4 +1,6 @@
 import React from 'react';
 
 export default props =>
-    <p className="webhookInstallStatus">Статус вебхука: {props.webhookInstallStatus}</p>
+    <div className="webhook-install-status">
+        <span>Статус вебхука: {props.webhookInstallStatus}</span>
+    </div>

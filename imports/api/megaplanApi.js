@@ -1,18 +1,46 @@
 import {Meteor} from 'meteor/meteor';
-import {inSalesApiGet, inSalesApiPost} from './inSalesHttpRequests';
-import {config} from '../config';
+import { megaplanApiAuthorization } from "./megaplanHttpRequest";
 import {Shops} from './publications';
 
 export const errorCodeInvalidMegaplanAuthData = 'invalid-auth-data';
 
 Meteor.methods({
-    upsertMegaplanApiData(login, password) {
-        if(Meteor.isServer)
-            return true;
-            //throw new Meteor.Error(errorCodeInvalidMegaplanAuthData, 'Invalid megaplan authentication data');
+    upsertMegaplanApiData(inSalesId, login, password, baseUrl) {
+        if(Meteor.isServer) {
+            try {
+                const response = megaplanApiAuthorization(login, password, baseUrl);
+                if(response && response.statusCode === 200 && response.data.status.code === 'ok') {
+                    Shops.upsert({
+                            inSalesId: inSalesId
+                        },
+                        {
+                            $set: {
+                                megaplanApiLogin: login,
+                                megaplanApiPassword: password,
+                                megaplanApiBaseUrl: baseUrl,
+                            }
+                        }
+                    );
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (e) {
+                throw new Meteor.Error(errorCodeInvalidMegaplanAuthData, 'Invalid megaplan authentication data');
+            }
+        }
     },
     isValidMegaplanApiData(inSalesId) {
         if(Meteor.isServer)
-            throw new Meteor.Error(errorCodeInvalidMegaplanAuthData, 'Invalid megaplan authentication data');
+            try {
+                const shop = Shops.findOne({inSalesId : inSalesId});
+                const response = megaplanApiAuthorization(shop.megaplanApiLogin, shop.megaplanApiPassword, shop.megaplanApiBaseUrl);
+                return !!(response && response.statusCode === 200 && response.data.status.code === 'ok');
+            }
+            catch (e) {
+                throw new Meteor.Error(errorCodeInvalidMegaplanAuthData, 'Invalid megaplan authentication data');
+            }
+            return true;
     }
 });

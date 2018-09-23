@@ -23,12 +23,7 @@ Meteor.methods({
                 trial_expired_at: now.toISOString().substr(0, 10),
             }
         };
-        try {
-            const response = inSalesApiPost(inSalesId, 'recurring_application_charge.json', data);
-        }
-        catch (e) {
-            return false;
-        }
+        const response = inSalesApiPost(inSalesId, 'recurring_application_charge.json', data);
         if(response && response.statusCode === 201) {
             Shops.upsert(
                 {inSalesId: inSalesId},
