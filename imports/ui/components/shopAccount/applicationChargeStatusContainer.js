@@ -3,6 +3,7 @@ import queryString from 'query-string';
 import {Meteor} from "meteor/meteor";
 import {withTracker} from "meteor/react-meteor-data";
 import {Shops} from "../../../api/publications";
+import ApplicationChargeStatus from './applicationChargeStatus.js';
 
 const ShopInSalesId = queryString.parse(location.search).insales_id;
 
@@ -17,16 +18,14 @@ class ApplicationChargeStatusContainer extends Component {
     }
 
     getApplicationChargeStatus() {
-        Meteor.call('getApplicationChargeStatus', ShopInSalesId, (error, result) => {
+        Meteor.call('getApplicationChargeStatus', ShopInSalesId, (error) => {
             if(error)
                 Meteor.call('upsertApplicationChargeStatus', ShopInSalesId);
-             else
-                debugger;
         });
     }
 
     render() {
-        return <span></span>;
+        return <ApplicationChargeStatus status={this.props.shop && this.props.shop.lockDate} />;
     }
 }
 
