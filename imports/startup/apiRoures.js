@@ -1,9 +1,10 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import InstallApp from '../ui/pages/installApp.js';
-import { errorCodeEmptyQuery, errorCodeEmptyAppSecretKey } from '../api/installApp.js';
+import InstallApp from '../ui/pages/installApp';
+import RemoveApp from '../ui/pages/removeApp';
+import { errorCodeEmptyQuery, errorCodeEmptyAppSecretKey } from '../api/installApp';
 
-WebApp.connectHandlers.use('/install', (req, res, next) => {
+WebApp.connectHandlers.use('/install', (req, res) => {
     Meteor.call('install', req.query.shop, req.query.token, req.query.insales_id, (error) => {
         if(error && error.error === errorCodeEmptyQuery)
             res.writeHead(400);
@@ -13,5 +14,11 @@ WebApp.connectHandlers.use('/install', (req, res, next) => {
             res.writeHead(200);
         res.end(renderToString(<InstallApp inSalesId={req.query.insales_id} shop={req.query.shop} token={req.query.token} errorCode={error && error.error} errorMessage={error && error.error && error.reason}/>));
     });
+});
+
+WebApp.connectHandlers.use('/remove', (req, res) => {
+    Meteor.call('remove', req.query.insales_id);
+    res.writeHead(200);
+    res.end(renderToString(<RemoveApp inSalesId={req.query.insales_id} />))
 });
 
