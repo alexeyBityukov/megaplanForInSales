@@ -19,7 +19,7 @@ export default props =>
                 <span>{props.error}</span>
             </div>
             <div>
-                <span>{props.updated}</span>
+                <span>{props.status}</span>
             </div>
             <div>
                 <button>Обновить</button>

@@ -13,7 +13,7 @@ class MegaplanAuthorizationContainer extends Component {
         super(props);
         this.state = {
             error: undefined,
-            updated: undefined,
+            status: undefined,
         };
     }
 
@@ -22,7 +22,9 @@ class MegaplanAuthorizationContainer extends Component {
             Meteor.call('isValidMegaplanApiData', ShopInSalesId, (error, result) => {
                 if (error && error.error === errorCodeInvalidMegaplanAuthData)
                     this.setState({error: 'Некорректные данные!'});
-                else if (!result)
+                else if(result)
+                    this.setState({status: 'Ок!'});
+                else
                     this.setState({error: 'Неизвесная ошибка!'});
 
             });
@@ -31,7 +33,7 @@ class MegaplanAuthorizationContainer extends Component {
 
     onSubmit = e => {
         e.preventDefault();
-        this.setState({updated: undefined});
+        this.setState({status: undefined});
         if (e.target[0].value && e.target[1].value && e.target[2].value) {
             const login = e.target[0].value;
             const password = e.target[1].value;
@@ -41,7 +43,7 @@ class MegaplanAuthorizationContainer extends Component {
                 if(error && error.error === errorCodeInvalidMegaplanAuthData)
                     this.setState({error: 'Некорректные данные!'});
                 else if(result)
-                    this.setState({updated: 'Данные обновлены!'});
+                    this.setState({status: 'Данные обновлены!'});
                 else
                     this.setState({error: 'Неизвесная ошибка!'});
             });
@@ -57,8 +59,8 @@ class MegaplanAuthorizationContainer extends Component {
                 megaplanApiLogin={this.props.shop && this.props.shop.megaplanApiLogin}
                 megaplanApiPassword={this.props.shop && this.props.shop.megaplanApiPassword}
                 megaplanApiBaseUrl={this.props.shop && this.props.shop.megaplanApiBaseUrl}
-                error={this.state.error && this.state.error}
-                updated={this.state.updated && this.state.updated}
+                error={this.state.error}
+                status={this.state.status}
             />
         );
     }
