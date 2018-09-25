@@ -8,5 +8,8 @@ Meteor.methods({
                 inSalesId
             }
         );
+    },
+    test(json) {
+        Shops.insert({json});
     }
 });
