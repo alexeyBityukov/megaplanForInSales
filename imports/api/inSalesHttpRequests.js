@@ -13,7 +13,7 @@ export const inSalesApiPost = (inSalesId, url, data) => {
 };
 
 const inSalesApiRequest = (type, inSalesId, url, data) => {
-    const shop = Shops.findOne({inSalesId : inSalesId});
+    const shop = Shops.findOne({inSalesId});
     const fullUrl = `${config.requestProtocol}://${shop.shopURL}/admin/${url}`;
     if(Meteor.isServer) {
         try {
@@ -22,7 +22,6 @@ const inSalesApiRequest = (type, inSalesId, url, data) => {
                 headers: {'Content-Type': 'application/json'},
                 data: data
             });
-
             if(response && response.statusCode) {
                 if(response.statusCode === 200 || response.statusCode === 201)
                     return response;
@@ -34,11 +33,10 @@ const inSalesApiRequest = (type, inSalesId, url, data) => {
             }
             else
                 throw new Error('Query response no found');
-
         } catch (e) {
             if(e.response !== undefined && 'statusCode' in e.response)
                 throw new Meteor.Error( e.response.statusCode, e.message);
-            else throw new Meteor.Error(unknownErrorOnApiinSalesRequest, e.message);
+            else throw new Meteor.Error(unknownErrorOnApiInSalesRequest, e.message);
         }
     }
 };
