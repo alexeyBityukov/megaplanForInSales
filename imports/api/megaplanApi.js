@@ -1,46 +1,86 @@
-import {Meteor} from 'meteor/meteor';
-import { megaplanApiAuthorization } from "./megaplanHttpRequest";
-import {Shops} from './publications';
+import { Meteor } from 'meteor/meteor';
+import { Shops } from './publications';
 
-export const errorCodeInvalidMegaplanAuthData = 'invalid-auth-data';
+const Megaplan = require ('megaplanjs');
+
+const setMegaplanApiDataStatus = (status, inSalesId) => {
+    Shops.upsert({
+            inSalesId
+        },
+        {
+            $set: {
+                setMegaplanApiDataStatus: status,
+            }
+        }
+    );
+};
 
 Meteor.methods({
     upsertMegaplanApiData(inSalesId, login, password, baseUrl) {
-        if(Meteor.isServer) {
+        if(Meteor.isServer)
             try {
-                const response = megaplanApiAuthorization(login, password, baseUrl);
-                if(response && response.statusCode === 200 && response.data.status.code === 'ok') {
-                    Shops.upsert({
-                            inSalesId: inSalesId
-                        },
-                        {
-                            $set: {
-                                megaplanApiLogin: login,
-                                megaplanApiPassword: password,
-                                megaplanApiBaseUrl: baseUrl,
-                            }
+                const client = new Megaplan.Client(baseUrl).auth(login, password);
+                Meteor.bindEnvironment(client.on('auth',  Meteor.bindEnvironment((res, err) => {
+                    try {
+                        if(err !== undefined)
+                            setMegaplanApiDataStatus(false, inSalesId);
+                        else {
+                            setMegaplanApiDataStatus(true, inSalesId);
+                            Shops.upsert({
+                                    inSalesId
+                                },
+                                {
+                                    $set: {
+                                        megaplanApiLogin: login,
+                                        megaplanApiPassword: password,
+                                        megaplanApiBaseUrl: baseUrl,
+                                    }
+                                }
+                            );
                         }
-                    );
-                    return true;
-                }
-                else
-                    return false;
+                    }
+                    catch (e) {
+                        setMegaplanApiDataStatus(false, inSalesId);
+                    }
+                })));
             }
             catch (e) {
-                throw new Meteor.Error(errorCodeInvalidMegaplanAuthData, 'Invalid megaplan authentication data');
+                setMegaplanApiDataStatus(false, inSalesId);
             }
-        }
+        return true;
     },
     isValidMegaplanApiData(inSalesId) {
         if(Meteor.isServer)
             try {
                 const shop = Shops.findOne({inSalesId : inSalesId});
-                const response = megaplanApiAuthorization(shop.megaplanApiLogin, shop.megaplanApiPassword, shop.megaplanApiBaseUrl);
-                return !!(response && response.statusCode === 200 && response.data.status.code === 'ok');
+                if(shop.megaplanApiBaseUrl === undefined || shop.megaplanApiLogin === undefined || shop.megaplanApiPassword === undefined) {
+                    Shops.upsert({
+                            inSalesId
+                        },
+                        {
+                            $unset: {
+                                setMegaplanApiDataStatus: '',
+                            }
+                        }
+                    );
+                    return true;
+                }
+                const client = new Megaplan.Client(shop.megaplanApiBaseUrl).auth(shop.megaplanApiLogin, shop.megaplanApiPassword);
+                Meteor.bindEnvironment(client.on('auth',  Meteor.bindEnvironment((res, err) => {
+                    try {
+                        if(err !== undefined)
+                            setMegaplanApiDataStatus(false, inSalesId);
+                        else
+                            setMegaplanApiDataStatus(true, inSalesId);
+                    }
+                    catch (e) {
+                        setMegaplanApiDataStatus(false, inSalesId);
+                    }
+                })));
             }
             catch (e) {
-                throw new Meteor.Error(errorCodeInvalidMegaplanAuthData, 'Invalid megaplan authentication data');
+                setMegaplanApiDataStatus(false, inSalesId);
             }
-            return true;
+        return true;
     }
 });

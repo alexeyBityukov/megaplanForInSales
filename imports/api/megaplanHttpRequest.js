@@ -1,26 +1,32 @@
 import { Meteor } from 'meteor/meteor';
 const md5 = require('md5');
 import { config } from '../config.js';
-//import { Shops } from './publications.js';
+import { Shops } from './publications.js';
 
-export const megaplanApiAuthorization = (login, password, baseUrl,) => {
+export const megaplanApiAuthorization = (login, password, baseUrl) => {
     const params = {
         Login: login,
         Password: md5(password)
     };
-    return megaplanApiRequest('GET', baseUrl, {}, {'Content-Type': 'application/json'}, params);
+    const fullUrl = `${baseUrl}${config.megaplanApiAuthorizationUrl}`;
+    return megaplanApiRequest('GET', fullUrl, {}, {'Content-Type': 'application/json'}, params);
 };
 
-/*export const inSalesApiPost = (inSalesId, url, data) => {
-    return inSalesApiRequest('POST', inSalesId, url, data);
-};*/
+export const megaplanApiCreateDeal = (inSalesId, data) => {
+    return megaplanApiPost(inSalesId, config.megaplanApiCreateDeal, data)
+};
+
+const megaplanApiPost = (inSalesId, url, data) => {
+    const shop = Shops.findOne({inSalesId});
+    const fullUrl = `${shop.megaplanApiBaseUrl}${config.megaplanApiAuthorizationUrl}`;
+    const method = 'POST';
+    return megaplanApiRequest('POST', fullUrl, {}, {'Content-Type': 'application/json'}, params);
+};
 
 
-const megaplanApiRequest = (type, baseUrl, data, headers, params) => {
+const megaplanApiRequest = (type, fullUrl, data, headers, params) => {
     if(params === undefined)
         params = {};
-    //const shop = Shops.findOne({inSalesId : inSalesId});
-    const fullUrl = `${baseUrl}${config.megaplanApiAuthorizationUrl}`;
     if(Meteor.isServer) {
         try {
             const response = HTTP.call(type, fullUrl, {

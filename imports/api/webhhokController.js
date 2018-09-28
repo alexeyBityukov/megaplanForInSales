@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Shops } from './publications';
 import { inSalesApiGet } from './inSalesHttpRequests';
+import { sendOrder } from './sendOrder';
 
 Meteor.methods({
     webhookController(order) {
@@ -14,10 +15,6 @@ Meteor.methods({
             return 0 < lockDate.valueOf() - now.valueOf();
         };
 
-        const sendOrder = () => {
-            return true;
-        };
-
         const inSalesId = order.account_id.toString();
         if(!applicationIsCharge(inSalesId)) {
             try {
@@ -28,7 +25,7 @@ Meteor.methods({
                         { $set: { lockDate: response.data.paid_till}}
                     );
                     if(applicationIsCharge(inSalesId)) {
-                        sendOrder();
+                        sendOrder(order);
                         return true;
                     }
                     else
@@ -42,7 +39,7 @@ Meteor.methods({
             }
         }
         else {
-            sendOrder();
+            sendOrder(order);
             return true;
         }
     }

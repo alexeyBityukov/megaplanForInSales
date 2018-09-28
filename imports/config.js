@@ -4,5 +4,4 @@ export const  config = {
     requestProtocol: 'https',
     webhookURL: 'https://megaplan-for-insales.cf/api/order',
     monthlyCost: '1000',
-    megaplanApiAuthorizationUrl: '/BumsCommonApiV01/User/authorize.api',
 };

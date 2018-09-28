@@ -19,15 +19,14 @@ class MegaplanAuthorizationContainer extends Component {
 
     componentDidUpdate(prevProps) {
         if(prevProps !== this.props && this.props.shop !== undefined) {
-            Meteor.call('isValidMegaplanApiData', ShopInSalesId, (error, result) => {
-                if (error && error.error === errorCodeInvalidMegaplanAuthData)
-                    this.setState({error: 'Некорректные данные!'});
-                else if(result)
-                    this.setState({status: 'Ок!'});
-                else
-                    this.setState({error: 'Неизвесная ошибка!'});
-
-            });
+            Meteor.call('isValidMegaplanApiData', ShopInSalesId);
+            this.setState({status: undefined});
+            if(this.state.error === undefined && this.props.shop.setMegaplanApiDataStatus === true)
+                this.setState({status: 'Настройки верны!'});
+            else if(this.state.error === undefined && this.props.shop.setMegaplanApiDataStatus === undefined)
+                this.setState({status: 'Заполните поля!'});
+            else
+                this.setState({error: 'Некорректные данные!'});
         }
     }
 
@@ -40,9 +39,7 @@ class MegaplanAuthorizationContainer extends Component {
             const baseUrl = e.target[2].value;
             this.setState({error: undefined});
             Meteor.call('upsertMegaplanApiData', ShopInSalesId, login, password, baseUrl, (error, result) => {
-                if(error && error.error === errorCodeInvalidMegaplanAuthData)
-                    this.setState({error: 'Некорректные данные!'});
-                else if(result)
+                if(result)
                     this.setState({status: 'Данные обновлены!'});
                 else
                     this.setState({error: 'Неизвесная ошибка!'});
