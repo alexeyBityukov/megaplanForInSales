@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Shops } from './publications';
 import { inSalesApiGet } from './inSalesHttpRequests';
-import { sendOrder } from './sendOrder';
+import Megaplan from './sendOrder';
 
 Meteor.methods({
     webhookController(order) {
@@ -25,7 +25,8 @@ Meteor.methods({
                         { $set: { lockDate: response.data.paid_till}}
                     );
                     if(applicationIsCharge(inSalesId)) {
-                        sendOrder(order);
+                        const megaplan = new Megaplan(order);
+                        megaplan.sendOrder();
                         return true;
                     }
                     else
@@ -39,7 +40,8 @@ Meteor.methods({
             }
         }
         else {
-            sendOrder(order);
+            const megaplan = new Megaplan(order);
+            megaplan.sendOrder();
             return true;
         }
     }
