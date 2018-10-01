@@ -25,6 +25,7 @@ export default class Megaplan {
                     if(err !== undefined)
                         throw new Error(err.message);
                     else {
+                        this.adminId = resp.employee_id;
                         this.getPrograms();
                     }
                 }
@@ -106,16 +107,94 @@ export default class Megaplan {
     };
 
     createDeal = () => {
-        const userId = this.userId;
-        debugger;
-        /*const deal = {
-            ProgramId: this.program,
-            Model: {
-                Contractor: this.userId
+        this.megaplanRequest(() => {
+            const deal = {
+                ProgramId: this.program,
+                Model: {
+                    Contractor: this.userId
+                }
+            };
+            this.client.deal_save(deal).send(resp => {
+                if(resp !== undefined && 'deal' in resp && 'id' in resp.deal && resp.deal.id !== undefined) {
+                    this.dealId = resp.deal.id;
+                    this.addPositionInDeal();
+                }
+                else
+                    throw Error('Error on create deal');
+            }, err => {
+                this.toLog(err);
+            });
+        });
+    };
+
+    addPositionInDeal = () => {
+        this.megaplanRequest(() => {
+            const deal = {
+                Id: this.dealId,
+                Positions: this.transformPositions(),
+                Model: {
+                    Description: `Адресс доставки: ${this.order.shipping_address.full_delivery_address}\nКомментарий к заказу: ${this.order.comment}`
+                }
+            };
+            this.client.deal_save(deal).send(resp => {
+                this.createTask();
+            }, err => {
+                this.toLog(err);
+            });
+        });
+    };
+
+    transformPositions = () => {
+        let positions = [];
+        this.order.order_lines.forEach(position => {
+            positions.push({
+                Name: position.title,
+                Count: position.quantity,
+                Price: {
+                    Value: position.sale_price
+                },
+                DiscountType: 2,
+                DiscountValue: {
+                    Value: position.discounts_amount
+                }
+            });
+        });
+        positions.push({
+            Name: 'Доставка: ' + this.order.delivery_title,
+            Count: 1,
+            Price: {
+                Value: this.order.full_delivery_price
             }
-        };
-        client.deal_save(deal).send(ok =>{}, err => {
-            toLog(err);});*/
+        });
+        return positions;
+    };
+
+    createTask = () => {
+        this.megaplanRequest(() => {
+            const task = {
+                Name: 'Обработать новый заказ из InSales',
+                Responsible: this.adminId
+            };
+            this.client.task_create(task).send(resp => {
+                if(resp !== undefined && 'id' in resp && resp.id !== undefined) {
+                    this.taskId = resp.id;
+                    this.linkingTaskWithDeal();
+                }
+                else
+                    throw Error('Error on create task');
+            }, err => {
+                this.toLog(err);
+            });
+        });
+    };
+
+    linkingTaskWithDeal = () => {
+        this.megaplanRequest(() => {
+            this.client.save_relation(this.dealId, this.taskId, 'task').send(resp => {
+            }, err => {
+                this.toLog(err);
+            });
+        });
     };
 
     megaplanRequest = (method) => {
@@ -131,5 +210,6 @@ export default class Megaplan {
         debugger;
         console.log(e.message);
         //все ошибки в лог!
+        //написать insalesid
     };
 }
