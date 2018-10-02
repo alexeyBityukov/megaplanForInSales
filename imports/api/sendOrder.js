@@ -207,9 +207,6 @@ export default class Megaplan {
     };
 
     toLog = e => {
-        debugger;
-        console.log(e.message);
-        //все ошибки в лог!
-        //написать insalesid
+        throw new Error('InSalesId: ' + this.inSalesId + ', OrderId: ' + this.order.id + ', Message: ' + e.message);
     };
 }
