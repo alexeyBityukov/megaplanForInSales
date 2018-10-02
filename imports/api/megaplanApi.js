@@ -1,16 +1,27 @@
 import { Meteor } from 'meteor/meteor';
 import { Shops } from './publications';
+import React from "react";
 
 const Megaplan = require ('megaplanjs');
 
 const setMegaplanApiDataStatus = (status, inSalesId) => {
+    let data = {};
+    if(status === false) {
+        data = {
+            MegaplanApiDataStatus: status,
+            listMegaplanProgram: ''
+        };
+    }
+    else {
+        data = {
+            MegaplanApiDataStatus: status
+        };
+    }
     Shops.upsert({
             inSalesId
         },
         {
-            $set: {
-                setMegaplanApiDataStatus: status,
-            }
+            $set: data
         }
     );
 };
@@ -59,7 +70,7 @@ Meteor.methods({
                         },
                         {
                             $unset: {
-                                setMegaplanApiDataStatus: '',
+                                MegaplanApiDataStatus: '',
                             }
                         }
                     );
@@ -82,5 +93,39 @@ Meteor.methods({
                 setMegaplanApiDataStatus(false, inSalesId);
             }
         return true;
+    },
+    getListPrograms(inSalesId) {
+        if(Meteor.isServer)
+            try {
+                const shop = Shops.findOne({inSalesId : inSalesId});
+                const client = new Megaplan.Client(shop.megaplanApiBaseUrl).auth(shop.megaplanApiLogin, shop.megaplanApiPassword);
+                Meteor.bindEnvironment(client.on('auth',  Meteor.bindEnvironment((resp, err) => {
+                    try {
+                        client.programs({}).send(Meteor.bindEnvironment(resp => {
+                            resp.programs = (Object.keys(resp.programs).map(i => {
+                                resp.programs[i].statuses = undefined;
+                                resp.programs[i].initial_status = undefined;
+                                resp.programs[i].numeration_mask = undefined;
+                                resp.programs[i].description = undefined;
+                                return resp.programs[i];
+                            }));
+                            Shops.upsert({
+                                    inSalesId
+                                },
+                                {
+                                    $set: {
+                                        listMegaplanProgram: resp.programs
+                                    }
+                                }
+                            );
+                        }), Meteor.bindEnvironment(err => {
+                        }));
+                    }
+                    catch (e) {
+                    }
+                })));
+            }
+            catch (e) {
+            }
     }
 });
