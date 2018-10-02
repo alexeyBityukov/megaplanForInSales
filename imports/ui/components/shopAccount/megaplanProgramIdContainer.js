@@ -12,7 +12,8 @@ class MegaplanProgramIdContainer extends Component {
         super(props);
         this.state = {
             disabled: true,
-            listPrograms: []
+            listPrograms: [],
+            error: ''
         }
     }
 
@@ -28,15 +29,29 @@ class MegaplanProgramIdContainer extends Component {
     }
 
     transformListPrograms() {
-         return (Object.keys(this.props.shop.listMegaplanProgram).map(program => {
+        let programs = [<option disabled selected value> -- Выберите схему -- </option>];
+        programs.push(Object.keys(this.props.shop.listMegaplanProgram).map(program => {
              program = this.props.shop.listMegaplanProgram[program];
                 if(program.active)
-                    return <option key={program.id}>{program.name}</option>;
+                    return <option key={program.id} program-id={program.id}>{program.name}</option>;
          }));
+        return programs;
     }
 
+    onSubmit = e => {
+        e.preventDefault();
+        this.setState({error: undefined});
+        let selectedIndex = e.target[0].selectedIndex;
+        let programId = e.target[0].options[selectedIndex].getAttribute('program-id');
+        if(programId) {
+            Meteor.call('upsertMegaplanProgramId', ShopInSalesId, programId);
+        }
+        else
+            this.setState({error: 'Поле не должно быть пустым!'});
+    };
+
     render() {
-        return <MegaplanProgramId listPrograms={this.state.listPrograms} disabled={this.state.disabled} onSubmit={() => {}}/>;
+        return <MegaplanProgramId listPrograms={this.state.listPrograms} disabled={this.state.disabled} onSubmit={this.onSubmit} error={this.state.error}/>;
     }
 }
 
