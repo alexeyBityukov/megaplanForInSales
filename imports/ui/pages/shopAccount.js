@@ -10,10 +10,16 @@ export const ShopAccount = () =>
     <div className="shop-account">
         <ShopAccountHeader />
         <div className="shop-account-content">
-            <WebhookStatusContainer />
-            <ApplicationChargeStatusContainer />
-            <MegaplanAuthorizationContainer />
-            <MegaplanProgramIdContainer />
+            <div className="insales-statuses">
+                <h2>Состояние приложения</h2>
+                <WebhookStatusContainer />
+                <ApplicationChargeStatusContainer />
+            </div>
+            <div className="megaplan-settings">
+                <h2>Настройки</h2>
+                <MegaplanAuthorizationContainer />
+                <MegaplanProgramIdContainer />
+            </div>
         </div>
         <ShopAccountFooter />
     </div>;

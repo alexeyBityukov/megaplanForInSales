@@ -10,10 +10,49 @@ body {
 .shop-account {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .shop-account-content{
     flex: 1 0 auto;
+    background: #f5f7fa;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px 5% 0 5%;
+    color: #414b4d;
+    font-size: 18px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 400;
+    max-width: 992px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.insales-statuses {
+    display: flex;
+    flex-direction: column;
+}
+
+.webhook-install-status, .application-charge-status {
+    margin-left: 5%;
+    line-height: 36px;
+}
+
+.application-charge-status-label, .webhook-install-status-label {
+    white-space: nowrap;
+}
+
+.application-charge-status-value, .webhook-install-status-value {
+    color: #828282;
+    white-space: nowrap;
+}
+
+h2 {
+    font-size: 44px;
+    text-transform: uppercase;
+    line-height: 45px;
+    font-weight: 500;
+    margin: 10px 0 10px 0;
 }
 
 .shop-account-header {
@@ -85,6 +124,7 @@ span.support-email {
     padding: 20px;
     background: #414b4d;
     flex: 0 0 auto;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
 }
 
 a.footer-email {

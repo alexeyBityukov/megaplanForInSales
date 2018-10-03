@@ -27,7 +27,7 @@ class WebhookStatusContainer extends Component {
         else
             Meteor.call('installWebhook', ShopInSalesId, (error, result) => {
                 if(result)
-                    this.setState({webhookInstallStatus: 'Вебхук установлен'});
+                    this.setState({webhookInstallStatus: 'установлен'});
                 else
                     this.setState({webhookInstallStatus: error.message});
             });
@@ -36,12 +36,12 @@ class WebhookStatusContainer extends Component {
     webhookIdIsValid() {
         Meteor.call('webhookIdIsValid', ShopInSalesId, (error, result) => {
             if(result)
-                this.setState({ webhookInstallStatus: 'Вебхук установлен'});
+                this.setState({ webhookInstallStatus: 'установлен'});
             else if(error) {
                 this.setState({webhookInstallStatus: error.message});
                 Meteor.call('installWebhook', ShopInSalesId, (error, result) => {
                     if(result)
-                        this.setState({webhookInstallStatus: 'Вебхук установлен'});
+                        this.setState({webhookInstallStatus: 'установлен'});
                     else
                         this.setState({webhookInstallStatus: error.message});
                 });
