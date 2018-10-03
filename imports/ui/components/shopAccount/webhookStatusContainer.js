@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import {withTracker} from "meteor/react-meteor-data";
+import { withTracker } from "meteor/react-meteor-data";
 import queryString from 'query-string';
-import { Shops } from '../../../api/publications.js';
-import WebhookStatus from './webhookStatus.js';
+import { Shops } from '../../../api/publications';
+import { WebhookStatus } from './webhookStatus';
 
 const ShopInSalesId = queryString.parse(location.search).insales_id;
 

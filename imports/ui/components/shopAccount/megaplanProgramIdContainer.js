@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import queryString from 'query-string';
-import {Meteor} from "meteor/meteor";
-import {withTracker} from "meteor/react-meteor-data";
-import {Shops} from "../../../api/publications";
-import MegaplanProgramId from './megaplanProgramId';
+import { Meteor } from "meteor/meteor";
+import { withTracker } from "meteor/react-meteor-data";
+import { Shops } from "../../../api/publications";
+import { MegaplanProgramId } from './megaplanProgramId';
 
 const ShopInSalesId = queryString.parse(location.search).insales_id;
 

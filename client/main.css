@@ -1,0 +1,100 @@
+html, body, div#root, .shop-account {
+    height: 100%;
+}
+
+body {
+    background-color: white;
+    margin: 0;
+}
+
+.shop-account {
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-account-content{
+    flex: 1 0 auto;
+}
+
+.shop-account-header {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    padding-top: 18px;
+    font-size: 18px;
+    font-family: 'Exo 2', sans-serif;
+    flex-flow: row wrap;
+    box-shadow: 0 10px 10px -10px rgba(0,0,0,0.5);
+    flex: 0 0 auto;
+}
+
+
+.button-back-to-insales {
+    border: 1px solid #08bf32;
+    color: #08bf32;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 4px 30px;
+    border-radius: 40px;
+    white-space: nowrap;
+}
+
+.logo {
+    min-width: 150px;
+}
+
+a.support-email {
+    text-decoration: none;
+    margin: 0 5px 18px 5px;
+}
+
+span.support-email {
+    font-family: 'Exo 2', sans-serif;
+    color: #414b4d;
+    font-size: 19px;
+    font-weight: 300;
+}
+
+.header-block {
+    margin-bottom: 18px;
+}
+
+.button-error-report {
+    border: 1px solid #414b4d;
+    color: #414b4d;
+    padding: 4px 30px;
+    border-radius: 40px;
+    white-space: nowrap;
+    cursor: pointer;
+    margin: 0 5px 18px 5px;
+}
+
+.right-block {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-flow: row wrap;
+}
+
+.shop-account-footer {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    box-sizing: border-box;
+    padding: 20px;
+    background: #414b4d;
+    flex: 0 0 auto;
+}
+
+a.footer-email {
+    text-decoration: none;
+}
+
+.footer-email, .footer-developer-name {
+    font-size: 14px;
+    font-weight: 300;
+    font-family: 'Exo 2', sans-serif;
+    color: #a6a6a6;
+}

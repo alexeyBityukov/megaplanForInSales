@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default props =>
+export const MegaplanAuthorization = props =>
     <div className="megaplan-api-data">
         <form onSubmit={props.onSubmit} >
             <div>
@@ -25,4 +25,4 @@ export default props =>
                 <button>Обновить</button>
             </div>
         </form>
-    </div>
+    </div>;

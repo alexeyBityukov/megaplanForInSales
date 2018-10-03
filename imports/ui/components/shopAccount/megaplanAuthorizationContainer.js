@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import {withTracker} from 'meteor/react-meteor-data';
-import {Meteor} from 'meteor/meteor';
-import {Shops} from '../../../api/publications';
+import { withTracker } from 'meteor/react-meteor-data';
+import { Meteor } from 'meteor/meteor';
+import { Shops } from '../../../api/publications';
 import queryString from 'query-string';
-import { errorCodeInvalidMegaplanAuthData} from '../../../api/megaplanApi';
-import MegaplanAuthorization from './megaplanAuthorization';
+import { errorCodeInvalidMegaplanAuthData } from '../../../api/megaplanApi';
+import { MegaplanAuthorization } from './megaplanAuthorization';
 
 const ShopInSalesId = queryString.parse(location.search).insales_id;
 

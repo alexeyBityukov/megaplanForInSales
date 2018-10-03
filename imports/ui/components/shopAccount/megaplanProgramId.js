@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default props =>
+export const MegaplanProgramId = props =>
     <div className="megaplan-program-id">
         <form onSubmit={props.onSubmit} >
             <div>
@@ -21,4 +21,4 @@ export default props =>
                 <button>Сохранить схему</button>
             </div>
         </form>
-    </div>
+    </div>;
