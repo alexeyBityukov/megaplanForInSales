@@ -39,13 +39,21 @@ export default class Megaplan {
 
     getPrograms = () => {
         this.megaplanRequest(() => {
-            this.client.programs({}).send(resp => {
-                this.program = resp.programs[0].id;
-                //set programs from settings app
+            if('MegaplanApiProgramId' in this.shop && this.shop.MegaplanApiProgramId !== null  && this.shop.MegaplanApiProgramId !== undefined) {
+                this.program = this.shop.MegaplanApiProgramId;
                 this.userPhoneIsUnic();
-            }, err => {
-                this.toLog(err);
-            })
+            }
+            else
+                this.client.programs({}).send(resp => {
+                    this.programs = (Object.keys(resp.programs).filter(i => {
+                        if(resp.programs[i].active)
+                            return resp.programs[i];
+                    }));
+                    this.program = resp.programs[0].id;
+                    this.userPhoneIsUnic();
+                }, err => {
+                    this.toLog(err);
+                })
         });
     };
 

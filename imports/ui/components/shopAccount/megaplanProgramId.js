@@ -5,7 +5,7 @@ export default props =>
         <form onSubmit={props.onSubmit} >
             <div>
                 <label htmlFor="program">Выберете схему</label>
-                <select id="program" autoComplete="false" disabled={props.disabled}>
+                <select value={props.value} id="program" autoComplete="false" disabled={props.disabled} onChange={props.onChange}>
                     {
                         props.listPrograms
                     }
@@ -15,7 +15,10 @@ export default props =>
                 <span>{props.error}</span>
             </div>
             <div>
-                <button>Обновить</button>
+                <span>{props.status}</span>
+            </div>
+            <div>
+                <button>Сохранить схему</button>
             </div>
         </form>
     </div>

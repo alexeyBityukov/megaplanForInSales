@@ -13,7 +13,9 @@ class MegaplanProgramIdContainer extends Component {
         this.state = {
             disabled: true,
             listPrograms: [],
-            error: ''
+            error: '',
+            MegaplanApiProgramId: -1,
+            status: ''
         }
     }
 
@@ -21,19 +23,22 @@ class MegaplanProgramIdContainer extends Component {
         if(prevProps !== this.props && this.props.shop !== undefined) {
             this.setState({disabled: true});
             if ('MegaplanApiDataStatus' in this.props.shop && this.props.shop.MegaplanApiDataStatus === true) {
-                this.setState({listPrograms: this.transformListPrograms()});
-                this.setState({disabled: false});
+                this.setState({
+                    listPrograms: this.transformListPrograms(),
+                    disabled: false,
+                    MegaplanApiProgramId: this.props.shop.MegaplanApiProgramId === undefined? -1 : this.props.shop.MegaplanApiProgramId
+                });
             }
             Meteor.call('getListPrograms', ShopInSalesId);
         }
     }
 
     transformListPrograms() {
-        let programs = [<option disabled selected value> -- Выберите схему -- </option>];
+        let programs = [<option key="-1" value="-1" disabled> -- Выберите схему -- </option>];
         programs.push(Object.keys(this.props.shop.listMegaplanProgram).map(program => {
              program = this.props.shop.listMegaplanProgram[program];
                 if(program.active)
-                    return <option key={program.id} program-id={program.id}>{program.name}</option>;
+                    return <option key={program.id} value={program.id}>{program.name}</option>;
          }));
         return programs;
     }
@@ -42,16 +47,33 @@ class MegaplanProgramIdContainer extends Component {
         e.preventDefault();
         this.setState({error: undefined});
         let selectedIndex = e.target[0].selectedIndex;
-        let programId = e.target[0].options[selectedIndex].getAttribute('program-id');
-        if(programId) {
+        let programId = e.target[0][selectedIndex].value;
+        if(programId && programId !== "-1") {
             Meteor.call('upsertMegaplanProgramId', ShopInSalesId, programId);
+            this.setState({status: 'Сохранено!'});
         }
         else
             this.setState({error: 'Поле не должно быть пустым!'});
     };
 
+    onChange = e => {
+        e.preventDefault();
+        this.setState({
+            MegaplanApiProgramId: e.target.value,
+            status: undefined
+        });
+    };
+
     render() {
-        return <MegaplanProgramId listPrograms={this.state.listPrograms} disabled={this.state.disabled} onSubmit={this.onSubmit} error={this.state.error}/>;
+        return <MegaplanProgramId
+            listPrograms={this.state.listPrograms}
+            disabled={this.state.disabled}
+            onSubmit={this.onSubmit}
+            error={this.state.error}
+            value={this.state.MegaplanApiProgramId}
+            onChange={this.onChange}
+            status={this.state.status}
+        />;
     }
 }
 
