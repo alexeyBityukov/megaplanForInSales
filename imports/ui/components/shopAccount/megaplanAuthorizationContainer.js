@@ -18,7 +18,7 @@ class MegaplanAuthorizationContainer extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps !== this.props && this.props.shop !== undefined) {
+        if(prevProps !== this.props && 'shop' in this.props && this.props.shop !== undefined) {
             Meteor.call('isValidMegaplanApiData', ShopInSalesId);
             if(this.state.error === undefined && this.props.shop.MegaplanApiDataStatus === true)
                 this.setState({status: 'Настройки корректны', error: undefined});

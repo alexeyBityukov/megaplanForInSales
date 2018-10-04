@@ -20,8 +20,9 @@ class MegaplanProgramIdContainer extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if(prevProps !== this.props && this.props.shop !== undefined) {
+        if(prevProps !== this.props && 'shop' in this.props && this.props.shop !== undefined) {
             this.setState({disabled: true});
+            Meteor.call('getListPrograms', ShopInSalesId);
             if ('MegaplanApiDataStatus' in this.props.shop && this.props.shop.MegaplanApiDataStatus === true) {
                 this.setState({
                     listPrograms: this.transformListPrograms(),
@@ -29,17 +30,17 @@ class MegaplanProgramIdContainer extends Component {
                     MegaplanApiProgramId: this.props.shop.MegaplanApiProgramId === undefined? -1 : this.props.shop.MegaplanApiProgramId
                 });
             }
-            Meteor.call('getListPrograms', ShopInSalesId);
         }
     }
 
     transformListPrograms() {
         let programs = [<option key="-1" value="-1" disabled> -- Выберите схему -- </option>];
-        programs.push(Object.keys(this.props.shop.listMegaplanProgram).map(program => {
-             program = this.props.shop.listMegaplanProgram[program];
-                if(program.active)
-                    return <option key={program.id} value={program.id}>{program.name}</option>;
-         }));
+        if('listMegaplanProgram' in this.props.shop && this.props.shop.listMegaplanProgram !== undefined)
+            programs.push(Object.keys(this.props.shop.listMegaplanProgram).map(program => {
+                 program = this.props.shop.listMegaplanProgram[program];
+                    if(program.active)
+                        return <option key={program.id} value={program.id}>{program.name}</option>;
+             }));
         return programs;
     }
 
