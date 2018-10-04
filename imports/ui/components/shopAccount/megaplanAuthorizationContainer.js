@@ -20,33 +20,34 @@ class MegaplanAuthorizationContainer extends Component {
     componentDidUpdate(prevProps) {
         if(prevProps !== this.props && this.props.shop !== undefined) {
             Meteor.call('isValidMegaplanApiData', ShopInSalesId);
-            this.setState({status: undefined});
             if(this.state.error === undefined && this.props.shop.MegaplanApiDataStatus === true)
-                this.setState({status: 'Настройки верны!'});
+                this.setState({status: 'Настройки корректны', error: undefined});
             else if(this.state.error === undefined && this.props.shop.MegaplanApiDataStatus === undefined)
-                this.setState({status: 'Заполните поля!'});
+                this.setState({status: 'Заполните поля!', error: undefined});
             else
-                this.setState({error: 'Некорректные данные!'});
+                this.setState({error: 'Некорректные данные!', status: undefined});
         }
     }
 
     onSubmit = e => {
         e.preventDefault();
-        this.setState({status: undefined});
         if (e.target[0].value && e.target[1].value && e.target[2].value) {
-            const login = e.target[0].value;
-            const password = e.target[1].value;
-            const baseUrl = e.target[2].value;
-            this.setState({error: undefined});
-            Meteor.call('upsertMegaplanApiData', ShopInSalesId, login, password, baseUrl, (error, result) => {
-                if(result)
-                    this.setState({status: 'Данные обновлены!'});
-                else
-                    this.setState({error: 'Неизвесная ошибка!'});
-            });
+            let baseUrl = e.target[2].value.replace(/https:/, '').replace(/\//g, '');
+            if (baseUrl.match(/\.megaplan\.ru$/) === null)
+                this.setState({error: 'Приведите ссылку к виду yourId.megaplan.ru', status: undefined});
+            else {
+                const login = e.target[0].value;
+                const password = e.target[1].value;
+                Meteor.call('upsertMegaplanApiData', ShopInSalesId, login, password, baseUrl, (error, result) => {
+                    if (result)
+                        this.setState({status: 'Настройки сохранены', error: undefined});
+                    else
+                        this.setState({error: 'Неизвесная ошибка!', status: undefined});
+                });
+            }
         }
         else
-            this.setState({error: 'Заполните все поля!'});
+            this.setState({error: 'Заполните все поля!', status: undefined});
     };
 
     render() {

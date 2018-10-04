@@ -13,9 +13,9 @@ class MegaplanProgramIdContainer extends Component {
         this.state = {
             disabled: true,
             listPrograms: [],
-            error: '',
+            error: undefined,
             MegaplanApiProgramId: -1,
-            status: ''
+            status: undefined
         }
     }
 
@@ -50,7 +50,7 @@ class MegaplanProgramIdContainer extends Component {
         let programId = e.target[0][selectedIndex].value;
         if(programId && programId !== "-1") {
             Meteor.call('upsertMegaplanProgramId', ShopInSalesId, programId);
-            this.setState({status: 'Сохранено!'});
+            this.setState({status: 'Сохранено'});
         }
         else
             this.setState({error: 'Поле не должно быть пустым!'});
