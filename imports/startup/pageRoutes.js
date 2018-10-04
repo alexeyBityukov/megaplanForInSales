@@ -2,7 +2,7 @@ import React from 'react';
 import { Router, Route, Switch } from 'react-router';
 import createBrowserHistory from 'history/createBrowserHistory';
 
-import NotFoundPage from '../ui/pages/pageNotFound.js';
+import { NotFoundPage } from '../ui/pages/pageNotFound.js';
 import { ShopAccount } from '../ui/pages/shopAccount.js';
 
 const browserHistory = createBrowserHistory();

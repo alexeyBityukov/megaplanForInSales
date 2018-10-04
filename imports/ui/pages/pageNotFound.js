@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor';
+import React from 'react';
+import { ShopAccountHeader } from "../components/shopAccount/shopAccountHeader";
+import { ShopAccountFooter } from "../components/shopAccount/shopAccountFooter";
 
 
-// Task component - represents a single todo item
-export default class Test extends Component {
-    render() {
-        return (
-            <h1>Page not found</h1>
-        );
-    }
-}
+export const NotFoundPage = () =>
+    <div className="page-not-found">
+        <ShopAccountHeader />
+        <div className="page-not-found-message">
+            <h2>404 - Страница не найдена</h2>
+        </div>
+        <ShopAccountFooter />
+    </div>;
