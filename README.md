@@ -9,6 +9,7 @@
 * [Meteor](https://www.meteor.com/) - Backend
 * [React](https://reactjs.org/) - Frontend
 * [Meteor Up](http://meteor-up.com/) - Deploy
+* [MongoDB](https://github.com/jsmarkus/the-little-mongodb-book/blob/master/ru/mongodb.markdown)
 * [ES6](https://learn.javascript.ru/js)
 * CSS3 + HTML5 - [Мой аккаунт на HtmlAcademy](https://htmlacademy.ru/profile/id817935/progress)
 * [InSales REST API](https://api.insales.ru/)
