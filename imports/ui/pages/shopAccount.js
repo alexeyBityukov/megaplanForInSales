@@ -3,12 +3,12 @@ import WebhookStatusContainer from '../components/shopAccount/webhookStatusConta
 import ApplicationChargeStatusContainer from '../components/shopAccount/applicationChargeStatusContainer';
 import MegaplanAuthorizationContainer from '../components/shopAccount/megaplanAuthorizationContainer';
 import MegaplanProgramIdContainer from '../components/shopAccount/megaplanProgramIdContainer';
-import { ShopAccountHeader } from '../components/shopAccount/shopAccountHeader';
-import { ShopAccountFooter } from '../components/shopAccount/shopAccountFooter';
+import { Header } from '../components/header';
+import { Footer } from '../components/footer';
 
 export const ShopAccount = () =>
     <div className="shop-account">
-        <ShopAccountHeader />
+        <Header />
         <div className="shop-account-content">
             <div className="insales-statuses">
                 <h2>Состояние приложения</h2>
@@ -21,5 +21,5 @@ export const ShopAccount = () =>
                 <MegaplanProgramIdContainer />
             </div>
         </div>
-        <ShopAccountFooter />
+        <Footer />
     </div>;

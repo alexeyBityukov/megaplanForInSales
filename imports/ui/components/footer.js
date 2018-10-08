@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ShopAccountFooter = () =>
+export const Footer = () =>
     <footer className="shop-account-footer">
         <FooterLeftBlock />
         <FooterRightBlock />

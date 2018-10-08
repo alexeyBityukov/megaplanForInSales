@@ -1,16 +1,16 @@
 import React from 'react';
 import ButtonBackToInSales from './buttonBackToInSales';
 
-export const ShopAccountHeader = () =>
+export const Header = (props) =>
     <header className="shop-account-header">
-        <HeaderLeftBlock />
+        <HeaderLeftBlock hideButtonBackToOffice={props.hideButtonBackToOffice}/>
         <HeaderCenterBlock />
         <HeaderRightBlock />
     </header>;
 
-const HeaderLeftBlock = () =>
+const HeaderLeftBlock = (props) =>
     <div className="left-block header-block">
-        <ButtonBackToInSales />
+        <ButtonBackToInSales hideButtonBackToOffice={props.hideButtonBackToOffice}/>
     </div>;
 
         const HeaderCenterBlock = () =>

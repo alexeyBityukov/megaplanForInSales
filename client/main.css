@@ -235,9 +235,29 @@ input:focus, select:focus {
     background: rgba(8, 130, 38, 0.95);
 }
 
-.page-not-found-message h2 {
+.page-not-found-message h2, .guide h2 {
     color: #414b4d;
     font-family: 'Exo 2', sans-serif;
     font-weight: 400;
     text-align: center;
+}
+
+.guide {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    align-items: center;
+}
+
+.guide p {
+    margin: 50px 10% 18px 10%;
+    font-size: 18px;
+    font-family: 'Exo 2', sans-serif;
+    color: #414b4d;
+    align-self: flex-start;
+}
+
+.guide img {
+    width: 75%;
+    box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
 }

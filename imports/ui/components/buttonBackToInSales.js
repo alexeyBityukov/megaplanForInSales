@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { withTracker } from "meteor/react-meteor-data";
 import { Meteor } from "meteor/meteor";
-import { Shops } from "../../../api/publications";
+import { Shops } from "../../api/publications";
 import queryString from "query-string";
 
 const ShopInSalesId = queryString.parse(location.search).insales_id;
@@ -25,7 +25,7 @@ class ButtonBackToInSales extends Component {
     }
 
     render() {
-        return <span className="button-back-to-insales" onClick={this.onClick} url={this.state.url}>Вернуться в бэкофис</span>;
+        return <span className="button-back-to-insales" onClick={this.onClick} url={this.state.url} style={{visibility: this.props.hideButtonBackToOffice? 'hidden': 'visible'}}>Вернуться в бэкофис</span>;
     }
 }
 
