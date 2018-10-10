@@ -8,7 +8,6 @@
 Для реализации этого проекта я использовал:
 * [Meteor](https://www.meteor.com/) - Backend
 * [React](https://reactjs.org/) - Frontend
-* [Meteor Up](http://meteor-up.com/) - Deploy
 * [MongoDB](https://github.com/jsmarkus/the-little-mongodb-book/blob/master/ru/mongodb.markdown)
 * [ES6](https://learn.javascript.ru/js)
 * CSS3 + HTML5 - [Мой аккаунт на HtmlAcademy](https://htmlacademy.ru/profile/id817935/progress)
@@ -45,17 +44,6 @@ meteor
 
 ## Запуск тестов
 Раздел в разработке
-
-## Развертывание приложения
-Для развертывания проекта на сервере я использовал Meteor Up. Подробные инструкции по развертыванию приложения доступны на сайте
-* [Meteor Up](http://meteor-up.com/getting-started.html)
-
-ВАЖНО: для корректной работы приложения не забудьте настроить SSL сертификат.
-
-Так же необходимо создать аккаунт в CMS InSales. Затем создать приложение в разделе Приложения -> Разработчикам -> Добавить приложение, после чего значения полей "Идентификатор" и "Секрет" сохранить в фале config.js. В технических параметрах приложения необходимо прописать:
-* URL установки - https://your-domen/api/install
-* URL входа - https://your-domen/account
-* URL деинсталяции - https://your-domen/api/remove
 
 ## Автор
 * **[Битюков Алексей](https://github.com/alexeyBityukov)** - *Создатель* - alex.bityuckov@gmail.com
