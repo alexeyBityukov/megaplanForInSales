@@ -125,7 +125,7 @@ export default class Megaplan {
             this.client.deal_save(deal).send(resp => {
                 if(resp !== undefined && 'deal' in resp && 'id' in resp.deal && resp.deal.id !== undefined) {
                     this.dealId = resp.deal.id;
-                    this.addPositionInDeal();
+                    this.transformPositions(this.order.order_lines);
                 }
                 else
                     throw Error('Error on create deal');
@@ -136,10 +136,11 @@ export default class Megaplan {
     };
 
     addPositionInDeal = () => {
-        this.megaplanRequest(() => {
+        debugger;
+        /*this.megaplanRequest(() => {
             const deal = {
                 Id: this.dealId,
-                Positions: this.transformPositions(),
+                Positions: this.formattedPositions,
                 Model: {
                     Description: `Адресс доставки: ${this.order.shipping_address.full_delivery_address}\nКомментарий к заказу: ${this.order.comment}`
                 }
@@ -149,10 +150,38 @@ export default class Megaplan {
             }, err => {
                 this.toLog(err);
             });
-        });
+        });*/
     };
 
-    transformPositions = () => {
+    transformPositions = positions => {
+        if(positions.length >= 1) {
+            let position = positions.shift();
+            this.megaplanRequest(() => {
+                const productsFilter = {
+                    Limit: 1,
+                    FilterFields: {
+                        Name: position.title
+                    },
+                    RequestedFields: ['Id']
+                };
+                debugger;
+                this.client.products(productsFilter).send(resp => {
+                    debugger;
+                    //this.formattedPositions
+                    this.transformPositions(positions);
+                }, err => {
+                    debugger;
+                    this.toLog(err);
+                });
+            });
+        }
+        else {
+            debugger;
+            this.addPositionInDeal();
+        }
+    };
+
+    /*transformPositions = () => {
         let positions = [];
         this.order.order_lines.forEach(position => {
             positions.push({
@@ -175,7 +204,7 @@ export default class Megaplan {
             }
         });
         return positions;
-    };
+    };*/
 
     createTask = () => {
         this.megaplanRequest(() => {
@@ -215,6 +244,7 @@ export default class Megaplan {
     };
 
     toLog = e => {
-        throw new Error('InSalesId: ' + this.inSalesId + ', OrderId: ' + this.order.id + ', Message: ' + e.message);
+        debugger;
+        throw new Error('InSalesId: ' + this.inSalesId + ', OrderId: ' + this.order.id + ', Message: ' + 'message' in e? e.message: '');
     };
 }
