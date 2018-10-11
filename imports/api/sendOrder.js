@@ -125,7 +125,8 @@ export default class Megaplan {
             this.client.deal_save(deal).send(resp => {
                 if(resp !== undefined && 'deal' in resp && 'id' in resp.deal && resp.deal.id !== undefined) {
                     this.dealId = resp.deal.id;
-                    this.transformPositions(this.order.order_lines);
+                    //this.transformPositions(this.order.order_lines);
+                    this.addPositionInDeal();
                 }
                 else
                     throw Error('Error on create deal');
@@ -136,12 +137,12 @@ export default class Megaplan {
     };
 
     addPositionInDeal = () => {
-        debugger;
-        /*this.megaplanRequest(() => {
+        this.megaplanRequest(() => {
             const deal = {
                 Id: this.dealId,
-                Positions: this.formattedPositions,
+                Positions: this.formattedPositions(),
                 Model: {
+                    Manager: parseInt(this.shop.ResponsibleManagerId),
                     Description: `Адресс доставки: ${this.order.shipping_address.full_delivery_address}\nКомментарий к заказу: ${this.order.comment}`
                 }
             };
@@ -150,7 +151,7 @@ export default class Megaplan {
             }, err => {
                 this.toLog(err);
             });
-        });*/
+        });
     };
 
     transformPositions = positions => {
@@ -181,7 +182,7 @@ export default class Megaplan {
         }
     };
 
-    /*transformPositions = () => {
+    formattedPositions = () => {
         let positions = [];
         this.order.order_lines.forEach(position => {
             positions.push({
@@ -204,13 +205,13 @@ export default class Megaplan {
             }
         });
         return positions;
-    };*/
+    };
 
     createTask = () => {
         this.megaplanRequest(() => {
             const task = {
                 Name: 'Обработать новый заказ из InSales',
-                Responsible: this.adminId
+                Responsible: parseInt(this.shop.ResponsibleManagerId)
             };
             this.client.task_create(task).send(resp => {
                 if(resp !== undefined && 'id' in resp && resp.id !== undefined) {

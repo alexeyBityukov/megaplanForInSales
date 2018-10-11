@@ -127,5 +127,40 @@ Meteor.methods({
             }
             catch (e) {
             }
+    },
+    getListResponsibleManagers(inSalesId) {
+        if(Meteor.isServer)
+            try {
+                const shop = Shops.findOne({inSalesId : inSalesId});
+                const client = new Megaplan.Client(shop.megaplanApiBaseUrl).auth(shop.megaplanApiLogin, shop.megaplanApiPassword);
+                Meteor.bindEnvironment(client.on('auth',  Meteor.bindEnvironment((resp, err) => {
+                    try {
+                        client.employees({}).send(Meteor.bindEnvironment(resp => {
+                            resp.employees = (Object.keys(resp.employees).map(i => {
+                                let employer = {
+                                    id: resp.employees[i].id,
+                                    name: resp.employees[i].name
+                                };
+                                if(resp.employees[i].fire_day === null)
+                                    return employer;
+                            }));
+                            Shops.upsert({
+                                    inSalesId
+                                },
+                                {
+                                    $set: {
+                                        listResponsibleManagers: resp.employees
+                                    }
+                                }
+                            );
+                        }), Meteor.bindEnvironment(err => {
+                        }));
+                    }
+                    catch (e) {
+                    }
+                })));
+            }
+            catch (e) {
+            }
     }
 });

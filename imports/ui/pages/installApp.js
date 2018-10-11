@@ -1,38 +1,59 @@
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 import {withTracker} from "meteor/react-meteor-data";
+import { errorCodeEmptyQuery, errorCodeEmptyAppSecretKey } from '../../api/installApp.js';
 import { Shops } from '../../api/publications.js';
-import InstallError from '../components/installError';
-
 
 class InstallApp extends Component {
     constructor(props) {
         super(props);
+        this.state = {error: ''};
     }
+
+    upsertShop = () => {
+        if(!this.isInstalled())
+            Meteor.call('install', queryParam.shop, queryParam.token, queryParam.insales_id, (error) => {
+                if(error && error.error === errorCodeEmptyQuery)
+                    this.setState({error: errorCodeEmptyQuery});
+                else if (error && error.error === errorCodeEmptyAppSecretKey)
+                    this.setState({error: errorCodeEmptyAppSecretKey});
+            });
+    };
 
     isInstalled() {
         return !(this.props.shop === undefined);
     }
 
+    componentWillMount() {
+        this.upsertShop();
+    }
+
+    componentDidUpdate() {
+        this.upsertShop();
+    }
+
     render() {
         let message = '';
 
-        if(this.props.errorCode !== undefined)
-            message = <InstallError errorCode={this.props.errorCode} errorMessage={this.props.errorMessage}/>;
-        else if (!this.isInstalled())
-            message = <span className="install-status">Application not installed</span>;
-        else if (this.isInstalled())
-            message = <span className="install-status">Application successfully installed</span>;
+        if(this.state.error !== '')
+            message = <span>error</span>;//использовать компонент ошибка
+        else if(!this.isInstalled())
+            message = <span>Application installing...</span>;
+        else if(this.isInstalled())
+            message = <span>Application successfully installed</span>;
 
         return (
-            <div className="installInfo">
+            <div>
                 {message}
             </div>
-        );
+        )
     }
 }
 
-export default withTracker((query) => {
+export default withTracker(() => {
+    Meteor.subscribe('shops', queryParam.insales_id);
+
     return {
-        shop: Shops.findOne({inSalesId: query.inSalesId})
+        shop: Shops.findOne()
     };
 })(InstallApp);

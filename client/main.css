@@ -194,6 +194,10 @@ input:focus, select:focus {
     margin-left: 16px;
 }
 
+#program {
+    margin-left: 195px;
+}
+
 .message-megaplan-authorization {
     margin-left: 10%;
     margin-top: 5px;
