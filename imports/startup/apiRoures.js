@@ -1,6 +1,5 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import InstallApp from '../ui/pages/installApp';
 import RemoveApp from '../ui/pages/removeApp';
 import { errorCodeEmptyQuery, errorCodeEmptyAppSecretKey } from '../api/installApp';
 import { Meteor } from 'meteor/meteor';
@@ -13,7 +12,7 @@ WebApp.connectHandlers.use('/api/install', (req, res) => {
             res.writeHead(500);
         else
             res.writeHead(200);
-        res.end(renderToString(<InstallApp inSalesId={req.query.insales_id} shop={req.query.shop} token={req.query.token} errorCode={error && error.error} errorMessage={error && error.error && error.reason}/>));
+        res.end(Meteor.bindEnvironment(() => {Meteor.call('install', req.query.shop, req.query.token, req.query.insales_id)}));
     });
 });
 

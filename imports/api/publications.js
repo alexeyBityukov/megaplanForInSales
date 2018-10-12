@@ -9,3 +9,5 @@ export let publishShops = () => {
             return Shops.find({inSalesId: inSalesId});
         });
 };
+
+publishShops();
