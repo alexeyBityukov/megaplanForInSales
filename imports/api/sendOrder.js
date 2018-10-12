@@ -154,7 +154,7 @@ export default class Megaplan {
         });
     };
 
-    transformPositions = positions => {
+    /*transformPositions = positions => {
         if(positions.length >= 1) {
             let position = positions.shift();
             this.megaplanRequest(() => {
@@ -180,7 +180,7 @@ export default class Megaplan {
             debugger;
             this.addPositionInDeal();
         }
-    };
+    };*/
 
     formattedPositions = () => {
         let positions = [];
@@ -245,7 +245,6 @@ export default class Megaplan {
     };
 
     toLog = e => {
-        debugger;
         throw new Error('InSalesId: ' + this.inSalesId + ', OrderId: ' + this.order.id + ', Message: ' + 'message' in e? e.message: '');
     };
 }
