@@ -11,12 +11,12 @@
     "classnames": "^2.2.5",
     "history": "^4.7.2",
     "md5": "^2.2.1",
-    "megaplanjs": "^1.0.3",
     "meteor-node-stubs": "^0.3.2",
     "query-string": "^6.1.0",
     "react": "^16.5.1",
     "react-dom": "^16.5.1",
-    "react-router": "^4.3.1"
+    "react-router": "^4.3.1",
+    "megaplanjs": "^1.0.3"
   },
   "devDependencies": {
     "chai": "^4.1.2"
