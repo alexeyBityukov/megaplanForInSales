@@ -263,5 +263,5 @@ input:focus, select:focus {
 
 .guide img {
     width: 75%;
-    box-shadow: 0 0 10px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
 }
