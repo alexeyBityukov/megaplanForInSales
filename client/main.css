@@ -62,7 +62,7 @@ h2 {
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    padding-top: 18px;
+    padding: 18px 5% 0 5%;
     font-size: 18px;
     font-family: 'Exo 2', sans-serif;
     flex-flow: row wrap;
@@ -92,11 +92,6 @@ h2 {
     box-shadow: 0 0 0 50px rgba(0, 0, 0, 0.1) inset;
 }
 
-.logo {
-    width: 34%;
-    min-width: 150px;
-}
-
 a.support-email {
     text-decoration: none;
     margin: 0 5px 18px 5px;
@@ -110,9 +105,16 @@ span.support-email {
 }
 
 .header-block {
+    text-align: left;
     width: 33%;
     margin-bottom: 18px;
     min-width: max-content;
+}
+
+.logo {
+    width: 34%;
+    min-width: 150px;
+    text-align: center;
 }
 
 .button-error-report {
@@ -130,7 +132,7 @@ span.support-email {
 
 .right-block {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     flex-flow: row wrap;
     width: 33%;
@@ -280,7 +282,7 @@ input:focus, select:focus {
     margin-bottom: 50px;
 }
 
-@media (max-width: 1152px) {
+@media (max-width: 1303px) {
     span.support-email {
         display: none;
     }
@@ -290,7 +292,7 @@ input:focus, select:focus {
     }
 }
 
-@media (max-width: 682px) {
+@media (max-width: 748px) {
     .header-block,  span.button-error-report {
         font-size: 20px;
     }
@@ -305,11 +307,13 @@ input:focus, select:focus {
     }
 
     .left-block {
+        text-align: center;
         order: 1;
         width: 50%;
     }
 
     .right-block {
+        justify-content: center;
         order: 1;
         width: 50%;
     }
