@@ -54,8 +54,8 @@ class MegaplanAuthorizationContainer extends Component {
         return (
             <MegaplanAuthorization
                 onSubmit={this.onSubmit}
-                megaplanApiLogin={this.props.shop && this.props.shop.megaplanApiLogin}
-                megaplanApiPassword={this.props.shop && this.props.shop.megaplanApiPassword}
+                megaplanApiLogin={this.props.shop && this.props.shop.megaplanApiLoginMask}
+                megaplanApiPassword={this.props.shop && this.props.shop.megaplanApiPasswordMask}
                 megaplanApiBaseUrl={this.props.shop && this.props.shop.megaplanApiBaseUrl}
                 error={this.state.error}
                 status={this.state.status}

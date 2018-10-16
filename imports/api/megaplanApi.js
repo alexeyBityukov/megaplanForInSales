@@ -37,6 +37,11 @@ Meteor.methods({
                             setMegaplanApiDataStatus(false, inSalesId);
                         else {
                             setMegaplanApiDataStatus(true, inSalesId);
+                            let megaplanApiLoginMask = '';
+                            for(let i = 0; i < login.length/2 - 0.5; i++) megaplanApiLoginMask+='*';
+                            megaplanApiLoginMask+=login.substring(parseInt(login.length/2));
+                            let megaplanApiPasswordMask = '';
+                            for(let i = 0; i < password.length; i++) megaplanApiPasswordMask+='*';
                             Shops.upsert({
                                     inSalesId
                                 },
@@ -45,6 +50,8 @@ Meteor.methods({
                                         megaplanApiLogin: login,
                                         megaplanApiPassword: password,
                                         megaplanApiBaseUrl: baseUrl,
+                                        megaplanApiLoginMask: megaplanApiLoginMask,
+                                        megaplanApiPasswordMask: megaplanApiPasswordMask,
                                     }
                                 }
                             );
