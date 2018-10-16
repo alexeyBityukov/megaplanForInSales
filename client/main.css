@@ -281,13 +281,36 @@ input:focus, select:focus {
 }
 
 @media (max-width: 1152px) {
+    span.support-email {
+        display: none;
+    }
 
-    .right-block {
-        order: 1;
+    a.support-email {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 682px) {
+    .header-block,  span.button-error-report {
+        font-size: 20px;
+    }
+
+    .logo {
+        width: 75%;
+        padding-bottom: 20px;
+    }
+
+    .logo img {
+        width: 100%;
     }
 
     .left-block {
-        padding-top: 10px;
-        order: 2;
+        order: 1;
+        width: 50%;
+    }
+
+    .right-block {
+        order: 1;
+        width: 50%;
     }
 }
