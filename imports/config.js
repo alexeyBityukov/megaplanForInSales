@@ -1,7 +1,7 @@
 export const  config = {
-    applicationId: 'megaplan',
-    appSecretKey: "aecca7eac7fa9a08003a9516806f15b0",
+    applicationId: 'insales-megaplan',
+    appSecretKey: "c6488f356a049471915e6498a7f48ccc",
     requestProtocol: 'https',
-    webhookURL: 'https://megaplan-for-insales.cf/api/order',
-    monthlyCost: '1000',
+    webhookURL: 'https://insales-megaplan.helixmedia.ru/api/order',
+    monthlyCost: '559',
 };

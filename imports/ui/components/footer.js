@@ -8,12 +8,12 @@ export const Footer = () =>
 
 const FooterLeftBlock = () =>
     <div className="left-block-footer">
-        <span className="footer-developer-name">2018 - Битюков Алексей</span>
+        <span className="footer-developer-name">2018 - LLC HELIX MEDIA</span>
     </div>;
 
 const FooterRightBlock = () =>
     <div className="right-block-footer">
-        <a className="footer-email" href="mailto:alex.bityuckov@gmail.com">
-            <span className="footer-email">alex.bityuckov@gmail.com</span>
+        <a className="footer-email" href="mailto:support@helixmedia.ru">
+            <span className="footer-email">support@helixmedia.ru</span>
         </a>
     </div>;

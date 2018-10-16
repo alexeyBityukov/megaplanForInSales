@@ -68,6 +68,7 @@ h2 {
     flex-flow: row wrap;
     box-shadow: 0 10px 10px -10px rgba(0,0,0,0.5);
     flex: 0 0 auto;
+    text-align: center;
 }
 
 .page-not-found-message {
@@ -82,7 +83,7 @@ h2 {
     color: #08bf32;
     font-weight: 300;
     cursor: pointer;
-    padding: 4px 30px;
+    padding: 4px 20px;
     border-radius: 40px;
     white-space: nowrap;
 }
@@ -92,6 +93,7 @@ h2 {
 }
 
 .logo {
+    width: 34%;
     min-width: 150px;
 }
 
@@ -103,18 +105,20 @@ a.support-email {
 span.support-email {
     font-family: 'Exo 2', sans-serif;
     color: #414b4d;
-    font-size: 19px;
-    font-weight: 300;
+    font-size: 18px;
+    font-weight: 500;
 }
 
 .header-block {
+    width: 33%;
     margin-bottom: 18px;
+    min-width: max-content;
 }
 
 .button-error-report {
     border: 1px solid #414b4d;
     color: #414b4d;
-    padding: 4px 30px;
+    padding: 4px 20px;
     border-radius: 40px;
     white-space: nowrap;
     cursor: pointer;
@@ -126,9 +130,11 @@ span.support-email {
 
 .right-block {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     flex-flow: row wrap;
+    width: 33%;
+    min-width: max-content;
 }
 
 .shop-account-footer {
@@ -212,7 +218,7 @@ input:focus, select:focus {
 
 .update-authorization-data {
     border: 0;
-    padding: 4px 30px;
+    padding: 4px 20px;
     border-radius: 50px;
     background: rgb(8, 191, 50);
     color: #fff;
@@ -246,6 +252,10 @@ input:focus, select:focus {
     text-align: center;
 }
 
+.guide h2 {
+    padding-top: 25px;
+}
+
 .guide {
     display: flex;
     flex-direction: column;
@@ -264,4 +274,8 @@ input:focus, select:focus {
 .guide img {
     width: 75%;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
+}
+
+.guide img:last-of-type {
+    margin-bottom: 50px;
 }

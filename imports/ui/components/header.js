@@ -9,9 +9,8 @@ export const Header = (props) =>
     </header>;
 
 const HeaderLeftBlock = (props) =>
-    <div className="left-block header-block">
         <ButtonBackToInSales hideButtonBackToOffice={props.hideButtonBackToOffice}/>
-    </div>;
+    ;
 
         const HeaderCenterBlock = () =>
     <div className="logo header-block">
@@ -22,10 +21,10 @@ const HeaderLeftBlock = (props) =>
 
 const HeaderRightBlock = () =>
     <div className="right-block">
-        <a className="support-email" href="mailto:alex.bityuckov@gmail.com">
-            <span className="support-email">alex.bityuckov@gmail.com</span>
+        <a className="support-email" href="tel:+79207217747">
+            <span className="support-email">+7 (920) 721-77-47</span>
         </a>
-        <a className="support-email" href="mailto:alex.bityuckov@gmail.com">
+        <a className="support-email" href="mailto:support@helixmedia.ru">
             <span className="button-error-report">Сообщить о ошибке</span>
         </a>
     </div>;

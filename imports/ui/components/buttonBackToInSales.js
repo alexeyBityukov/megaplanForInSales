@@ -25,7 +25,9 @@ class ButtonBackToInSales extends Component {
     }
 
     render() {
-        return <span className="button-back-to-insales" onClick={this.onClick} url={this.state.url} style={{visibility: this.props.hideButtonBackToOffice? 'hidden': 'visible'}}>Вернуться в бэкофис</span>;
+        return <div className="left-block header-block" style={{display: this.props.hideButtonBackToOffice? 'none': 'initial'}}>
+                <span className="button-back-to-insales" onClick={this.onClick} url={this.state.url}>Вернуться в бэкофис</span>
+            </div>;
     }
 }
 
