@@ -6,7 +6,7 @@ import Megaplan from './sendOrder';
 Meteor.methods({
     webhookController(order) {
         const inSalesId = order.account_id.toString();
-        const shop = Shops.findOne({inSalesId});
+        let shop = Shops.findOne({inSalesId});
 
         const applicationIsCharge = () => {
             if(!shop.lockDate)
@@ -18,7 +18,12 @@ Meteor.methods({
         };
 
         const shopIsBanned = () => {
-            return 'shopBanned' in shop && shop.shopBanned === true;
+            if(!shop.shopBanned)
+                return false;
+            const lockDate = new Date(shop.shopBanned);
+            lockDate.setDate(lockDate.getDate() + 1);
+            const now = new Date();
+            return 0 < lockDate.valueOf() - now.valueOf();
         };
         if(!applicationIsCharge()) {
             if(!shopIsBanned())
@@ -29,10 +34,11 @@ Meteor.methods({
                         Shops.upsert(
                             {inSalesId},
                             {$set: {
-                                lockDate: response.data.paid_tillm,
+                                lockDate: response.data.paid_till,
                                 shopBanned: false
                             }}
                         );
+                        shop = Shops.findOne({inSalesId});
                         if (applicationIsCharge(inSalesId)) {
                             const megaplan = new Megaplan(order);
                             megaplan.sendOrder();
@@ -41,7 +47,7 @@ Meteor.methods({
                         else {
                             Shops.upsert(
                                 {inSalesId},
-                                {$set: {shopBanned: true}}
+                                {$set: {shopBanned: new Date()}}
                             );
                             return false;
                         }
