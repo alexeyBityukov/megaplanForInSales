@@ -279,3 +279,15 @@ input:focus, select:focus {
 .guide img:last-of-type {
     margin-bottom: 50px;
 }
+
+@media (max-width: 1152px) {
+
+    .right-block {
+        order: 1;
+    }
+
+    .left-block {
+        padding-top: 10px;
+        order: 2;
+    }
+}
