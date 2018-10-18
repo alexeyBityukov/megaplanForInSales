@@ -8,7 +8,7 @@ export const Footer = () =>
 
 const FooterLeftBlock = () =>
     <div className="left-block-footer">
-        <span className="footer-developer-name">2018 - LLC HELIX MEDIA</span>
+        <span className="footer-developer-name">2018 - HELIX MEDIA, LLC</span>
     </div>;
 
 const FooterRightBlock = () =>

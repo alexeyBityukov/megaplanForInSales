@@ -47,4 +47,4 @@ meteor
 
 ## Автор
 * **[Битюков Алексей](https://github.com/alexeyBityukov)** - *Разработчик* - alex.bityuckov@gmail.com
-* **[LLC HELIX MEDIA](https://helixmedia.ru/)** - *Правообладатель* - support@helixmedia.ru
+* **[HELIX MEDIA, LLC](https://helixmedia.ru/)** - *Правообладатель* - support@helixmedia.ru
