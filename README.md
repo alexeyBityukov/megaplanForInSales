@@ -2,7 +2,7 @@
 
 Приложение осуществляет одностороннюю интеграцию CMS InSales с Megaplan. Функционал обеспечивает автоматическую отправку заказов в CRM. Приложение опубликовано в магазине приложении InSales и доступно [здесь](https://www.insales.ru/collection/apps-crm/product/megaplan). Этот проект был создан для демонстрации моих знаний и умений, как Frontend разработчика.
 
-Интерфейс личного кабинета можно посмотреть [здесь](https://megaplan-for-insales.cf/account/?shop=myshop-qv77.myinsales.ru&insales_id=571657)
+Интерфейс личного кабинета можно посмотреть [здесь](https://insales-megaplan.helixmedia.ru/account?insales_id=360290&shop=helixmedia.myinsales.ru&user_email=beshodarniy.vn%40yandex.ru&user_id=481544)
 
 
 Для реализации этого проекта я использовал:
@@ -46,5 +46,5 @@ meteor
 Раздел в разработке
 
 ## Автор
-* **[Битюков Алексей](https://github.com/alexeyBityukov)** - *Создатель* - alex.bityuckov@gmail.com
-* **[LLC HELIX MEDIA](https://helixmedia.ru/)** - Правообладатель
+* **[Битюков Алексей](https://github.com/alexeyBityukov)** - *Разработчик* - alex.bityuckov@gmail.com
+* **[LLC HELIX MEDIA](https://helixmedia.ru/)** - *Правообладатель* - support@helixmedia.ru
